@@ -12,13 +12,16 @@ trap 'early_exit; exit;' SIGINT SIGQUIT
 early_exit()
 {
 	echo ""
+
 	if [[ -n "$HOST_DIR" ]]; then
 		echo -n "Removing temporary directory on the host..."
+		ssh root@$HOST "umount $HOST_DIR/ram" > /dev/null 2>&1
 		ssh root@$HOST "rm -rf $HOST_DIR"
 		echo "done"
 	fi
 	if [[ -n "$GUEST_DIR" ]]; then
 		echo -n "Removing temporary directory on the guest"
+		ssh root@$GUEST1 "umount $GUEST_DIR/ram" > /dev/null 2>&1
 		ssh root@$GUEST1 "rm -rf $GUEST_DIR"
 		echo "done"
 	fi
@@ -28,6 +31,7 @@ early_exit()
 		echo "done"
 	fi
 	echo "Exiting!"
+	exit 1
 }
 
 function start_guest()
@@ -92,7 +96,10 @@ function common_test()
 "chmod a+x $remote_dir/$cmdname && "\
 "cd $remote_dir && "\
 "./$cmdname > $uut.log 2>&1"
-	ssh root@$remote "$remote_cmd"
+	ssh -t root@$remote "$remote_cmd"
+	if [[ $? == 255 ]]; then
+		early_exit
+	fi
 
 	# Get time stats
 	rm -f /tmp/time.txt
@@ -101,6 +108,7 @@ function common_test()
 	echo ""
 
 	# Clean up
+	ssh root@$remote "umount $remote_dir/ram > /dev/null 2>&1"
 	ssh root@$remote "rm -rf $remote_dir"
 	set_remote_dir ""
 }
@@ -149,13 +157,29 @@ function dd_rw_test()
 	common_test "$1" "$2" ""
 }
 
+function fake_test()
+{
+	common_test "$1" "$2" ""
+}
+
 ##########################################################################
 # Test Harness
 #
 
+fn_exists()
+{
+    type $1 2>/dev/null | grep -q 'is a function' 1> /dev/null 2>&1
+}
+
 function run_test
 {
 	TEST="$1"
+
+	if ! fn_exists "${TEST}_test"; then
+		echo "Test function ${TEST}_test not defined!"
+		exit 1
+	fi
+
 	echo "($TEST):"
 
 	echo -en "native:\t"
@@ -170,7 +194,7 @@ function run_test
 	shutdown_guest $GUEST1
 }
 
-TESTS="hackbench kernel_compile untar curl_1k curl_1g dd_write dd_read dd_rw"
+TESTS="hackbench kernel_compile untar curl_1k curl_1g dd_write dd_read dd_rw fake"
 
 if [[ -n "$1" ]]; then
 	run_test "$1"
@@ -186,6 +210,6 @@ else
 
 		echo "============================================"
 		echo -e "\n\n"
-		i=$i+1
+		i=$(($i+1))
 	done
 fi

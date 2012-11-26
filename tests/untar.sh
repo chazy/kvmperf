@@ -2,6 +2,10 @@
 
 source common.sh
 
+mkdir ram
+mount -t ramfs none ram
+pushd ram
+
 wget -q "http://$WEBHOST/$KERNEL_TAR"
 if [[ ! $? == 0 ]]; then
 	exit 1
@@ -10,9 +14,11 @@ fi
 tar xjf $KERNEL_TAR
 rm -rf $KERNEL
 
-for i in `seq 1 10`; do
+for i in `seq 1 $REPTS`; do
 	rm -rf $KERNEL
-	sync
-	echo 3 > /proc/sys/vm/drop_caches
 	$TIME tar xjf $KERNEL_TAR
 done
+mv $TIMELOG ../.
+
+popd
+umount ram

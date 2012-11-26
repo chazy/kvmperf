@@ -10,12 +10,12 @@ tar xjf $KERNEL_TAR
 pushd $KERNEL
 
 make vexpress_defconfig
-make -j 10
+make -j $REPTS
 
-for i in `seq 1 10`; do
+for i in `seq 1 $REPTS`; do
 	make clean
-	sync
-	echo 3 > /proc/sys/vm/drop_caches
+	#sync
+	#echo 3 > /proc/sys/vm/drop_caches
 	$TIME $KERNEL_BUILD_CMD
 done
 popd
