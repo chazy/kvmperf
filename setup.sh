@@ -17,7 +17,9 @@ fi
 
 echo ""
 
-START_VM_COMMAND="cd /root && ./run-ubuntu.sh"
+# Commands
+START_VM_COMMAND="cd /root && ./run-ubuntu.sh --no-console -m 1536"
+SCP="scp -q"
 
-
-
+# Environment
+IFS=$(echo -en "\n\t ")

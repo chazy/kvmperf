@@ -1,6 +1,7 @@
 #!/bin/bash
 
-TIME="/usr/bin/time --format=%e -o time.txt --append"
+TIMELOG=time.txt
+TIME="/usr/bin/time --format=%e -o $TIMELOG --append"
 WEBHOST="192.168.27.90"
 KERNEL="linux-3.6"
 KERNEL_TAR="$KERNEL.tar.bz2"
