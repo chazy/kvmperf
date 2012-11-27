@@ -50,7 +50,7 @@ function shutdown_guest()
 	echo "Shutting down guest" >> $LOGFILE
 	ssh root@$GUEST1 "halt -p"
 	sleep 3
-	ssh root@$HOST "pkill -9 qemu-system-arm"
+	ssh root@$HOST "$SHUTDOWN_VM_COMMAND" >/dev/null 2>/dev/null
 	sleep 1
 }
 
@@ -93,10 +93,11 @@ function common_test()
 	# Create remote directory, upload common scripts and tools
 	echo "Uploading common scripts and tools" >> $LOGFILE
 	ssh root@$remote "mkdir $remote_dir"
+	$SCP ".localconf" root@$remote:$remote_dir/.
 	$SCP "tests/common.sh" root@$remote:$remote_dir/.
 	$SCP "tests/$cmdname" root@$remote:$remote_dir/.
 	while [[ -n $1 ]]; do
-		scp -q "tools/$1" root@$remote:$remote_dir/.
+		scp -q "$TOOLS/$1" root@$remote:$remote_dir/.
 		shift 1
 	done
 

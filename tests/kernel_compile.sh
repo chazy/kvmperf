@@ -14,11 +14,11 @@ tar xjf $KERNEL_TAR
 pushd $KERNEL
 
 make vexpress_defconfig
-make -j $REPTS
+make -j10 zImage
 
 for i in `seq 1 $REPTS`; do
 	make clean
-	$TIME $KERNEL_BUILD_CMD
+	$TIME make -j10 zImage
 done
 popd
 mv $KERNEL/$TIMELOG .
