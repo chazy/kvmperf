@@ -23,3 +23,4 @@ SCP="scp -q"
 
 # Environment
 IFS=$(echo -en "\n\t ")
+LOGFILE=/tmp/kvmperf.log

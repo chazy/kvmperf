@@ -8,5 +8,5 @@ $TIME curl -s $URL > /dev/null
 rm $TIMELOG
 
 for i in `seq 1 $REPTS`; do
-	$TIME bash -c "for j in \`seq 1 $REPTS0\`; do curl -s $URL > /dev/null; done;"
+	$TIME bash -c "for j in \`seq 1 1000\`; do curl -s $URL > /dev/null; done;"
 done

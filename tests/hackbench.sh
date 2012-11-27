@@ -2,7 +2,7 @@
 
 source common.sh
 
-CMD="./hackbench $REPTS process 5 2>&1 > /dev/null"
+CMD="./hackbench 100 process 500 2>&1 > /dev/null"
 
 $CMD 2>&1 > /dev/null
 
