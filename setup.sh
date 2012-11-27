@@ -32,7 +32,7 @@ else
 	echo -n "What's the DNS/IP of the web server? [$WEBHOST]:"
 	read _WEBHOST
 	if [[ -n "$_WEBHOST" ]]; then
-		GUEST="$_WEBHOST"
+		WEBHOST="$_WEBHOST"
 	fi
 
 	echo "ARCH=\"$ARCH\"" > .localconf
