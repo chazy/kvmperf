@@ -15,9 +15,11 @@ tar xjf $KERNEL_TAR
 rm -rf $KERNEL
 
 for i in `seq 1 $REPTS`; do
+	echo -n "."
 	rm -rf $KERNEL
 	$TIME tar xjf $KERNEL_TAR
 done
+echo ""
 mv $TIMELOG ../.
 
 popd

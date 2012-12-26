@@ -1,10 +1,12 @@
 #!/bin/bash
 
+REPTS_LIM=3
+
 source common.sh
 
-mkdir ram
-mount -t ramfs none ram
-pushd ram
+#mkdir ram
+#mount -t ramfs none ram
+#pushd ram
 
 wget -q "http://$WEBHOST/$KERNEL_TAR"
 if [[ ! $? == 0 ]]; then
@@ -17,11 +19,12 @@ make vexpress_defconfig
 make -j10 zImage
 
 for i in `seq 1 $REPTS`; do
+	echo " *** Test $i of $REPTS ***"
 	make clean
 	$TIME make -j10 zImage
 done
 popd
 mv $KERNEL/$TIMELOG .
 
-mv $TIMELOG ../.
-popd
+#mv $TIMELOG ../.
+#popd

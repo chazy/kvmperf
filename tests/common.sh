@@ -8,7 +8,10 @@ TIMELOG=time.txt
 TIME="/usr/bin/time --format=%e -o $TIMELOG --append"
 KERNEL="linux-3.6"
 KERNEL_TAR="$KERNEL.tar.bz2"
-REPTS=2
+
+if [[ -n "$REPTS_LIM" ]]; then
+	REPTS="$REPTS_LIM"
+fi
 
 # Host Type Specific Defines
 if [[ "$ARCH" == "x86" ]]; then

@@ -2,11 +2,13 @@
 
 source common.sh
 
-CMD="./hackbench 100 process 500 2>&1 > /dev/null"
+CMD="./hackbench 100 process 500"
 
-$CMD 2>&1 > /dev/null
+$CMD
 
 for i in `seq 1 $REPTS`; do
-	$TIME bash -c "$CMD 2>&1"
+	echo -n "."
+	$TIME bash -c "$CMD"
 done
+echo ""
 

@@ -4,9 +4,11 @@ source common.sh
 
 URL="http://$WEBHOST/large"
 
-$TIME curl -s $URL > /dev/null
+$TIME curl $URL -o /dev/null
 rm $TIMELOG
 
 for i in `seq 1 $REPTS`; do
-	$TIME curl -s $URL > /dev/null
+	echo -n "."
+	$TIME curl $URL -o /dev/null
 done
+echo ""
