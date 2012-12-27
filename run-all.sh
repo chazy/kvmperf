@@ -222,15 +222,55 @@ source tests/mysql.sh
 # Test Harness
 #
 
+TESTS="hackbench untar curl1k curl1g apache mysql dd_write dd_read dd_rw kernel_compile ws_arm"
+GUEST_ONLY_TESTS=""
+HOST_ONLY_TESTS="ws_arm"
+
 fn_exists()
 {
     type $1 2>/dev/null | grep -q 'is a function' 1> /dev/null 2>&1
 }
 
+is_guest_only()
+{
+	TEST="$1"
+	GUEST_ONLY_TESTS=( $GUEST_ONLY_TESTS )
+	for _T in ${GUEST_ONLY_TESTS[@]}; do
+		if [[ "$_T" == "$TEST" ]]; then
+			return 1
+		fi
+	done
+	return 0
+}
+
+is_host_only()
+{
+	TEST="$1"
+	HOST_ONLY_TESTS=( $HOST_ONLY_TESTS )
+	for _T in ${HOST_ONLY_TESTS[@]}; do
+		if [[ "$_T" == "$TEST" ]]; then
+			return 1
+		fi
+	done
+	return 0
+}
+
 function run_test
 {
 	TEST="$1"
-	RUN_IN_GUEST=$2
+
+	RUN_IN_GUEST=1
+	RUN_ON_HOST=1
+
+	is_host_only "$TEST"
+	if [[ $? == 1 ]]; then
+		RUN_IN_GUEST = 0
+	fi
+
+	is_guest_only "$TEST"
+	if [[ $? == 1 ]]; then
+		RUN_ON_HOST=0
+	fi
 
 	if ! fn_exists "${TEST}_test"; then
 		echo "Test function ${TEST}_test not defined!"
@@ -239,8 +279,11 @@ function run_test
 
 	echo "($TEST):" | tee -a $LOGFILE
 
-	echo -en "native:\t" | tee -a $LOGFILE
-	eval "${TEST}_test $TEST $HOST"
+	# Run test on native side (unless a guest-only test)
+	if [[ $RUN_ON_HOST == 1 ]]; then
+		echo -en "native:\t" | tee -a $LOGFILE
+		eval "${TEST}_test $TEST $HOST"
+	fi
 
 	if [[ $RUN_IN_GUEST == 1 ]]; then
 		start_guest
@@ -264,48 +307,90 @@ function run_test
 	return 0
 }
 
-TESTS="hackbench untar curl1k curl1g apache mysql dd_write dd_read dd_rw kernel_compile "
-#TESTS="hackbench untar curl1k curl1g kernel_compile "
-HOST_TESTS="ws_arm"
+usage() {
+	U=""
+	if [[ -n "$1" ]]; then
+		U="${U}$1\n\n"
+	fi
+	U="${U}Usage: $0 [options] [test-names] \n\n"
+	U="${U}Options:\n"
+	U="$U    --host-only:       Only run test(s) on host\n"
+	U="$U    --guest-only:      Only run test(s) on VM guests\n"
+	U="$U    -h | --help:       Show this message\n"
+	U="$U\n"
+	U="${U}Available tests are:\n"
+	U="$U    $TESTS\n"
+
+	echo -e "$U" >&2
+}
+
+
+HONLY=0
+GONLY=0
+
+while :
+do
+	case "$1" in
+	  --host-only)
+		if [[ $GONLY == 1 ]]; then
+			usage "error: $1 conflicts with --guest-only"
+			exit 1
+		fi
+		HONLY=1
+		shift 1
+		;;
+	  --guest-only)
+		if [[ $HONLY == 1 ]]; then
+			usage "error: $1 conflicts with --host-only"
+			exit 1
+		fi
+		GONLY=1
+		shift 1
+		;;
+	  -h | --help)
+		usage
+		exit 0
+		;;
+	  --) # End of all options
+		shift
+		break
+		;;
+	  -*) # Unknown option
+		usage "Error: Unknown option: $1"
+		exit 1
+		;;
+	  *)
+		TESTS="$1"
+		shift 1
+		break
+		;;
+	esac
+done
+
+#TODO: Don't allow a host-only test to become a guest-only test... eh.
+if [[ $HONLY == 1 ]]; then
+	HOST_ONLY_TESTS="$TESTS"
+else
+	GUEST_ONLY_TESTS="$TESTS"
+fi
 
 echo -e "\n" >> $OUTFILE
 echo -n "Performing KVM benchmarks (" >> $OUTFILE
 date | tr '\n' ')' >> $OUTFILE
 echo >> $OUTFILE
 
-if [[ -n "$1" ]]; then
-	echo "$HOST_TESTS" | grep -q "\<$1\>"
-	if [[ $? == 0 ]]; then
-		run_test "$1" 0
-	else
-		run_test "$1" 1
-	fi
-else
-	i=1
-	TESTS=( $TESTS )
-	HOST_TESTS=( $HOST_TESTS )
-	total=$(( ${#TESTS[@]} + ${#HOST_TESTS[@]} ))
-	for TEST in ${TESTS[@]}; do
-		echo "============================================" | tee -a $LOGFILE
-		echo -n "Test $i of $total " | tee -a $LOGFILE
+i=1
+TESTS=( $TESTS )
+total=$(( ${#TESTS[@]} + ${#HOST_TESTS[@]} ))
+for TEST in ${TESTS[@]}; do
+	echo "============================================" | tee -a $LOGFILE
+	echo -n "Test $i of $total " | tee -a $LOGFILE
 
-		run_test "$TEST" 1
+	run_test "$TEST"
 
-		echo "============================================" | tee -a $LOGFILE
-		echo -e "\n\n" | tee -a $LOGFILE
-		i=$(($i+1))
-	done
+	echo "============================================" | tee -a $LOGFILE
+	echo -e "\n\n" | tee -a $LOGFILE
+	i=$(($i+1))
+done
 
-	for TEST in ${HOST_TESTS[@]}; do
-		echo "============================================" | tee -a $LOGFILE
-		echo -n "Test $i of $total " | tee -a $LOGFILE
-
-		run_test "$TEST" 0
-
-		echo "============================================" | tee -a $LOGFILE
-		echo -e "\n\n" | tee -a $LOGFILE
-		i=$(($i+1))
-	done
-
-	echo "Done. Results in: $OUTFILE"
-fi
+echo "Done. Results in: $OUTFILE"
