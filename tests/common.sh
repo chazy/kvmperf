@@ -9,7 +9,7 @@ TIME="/usr/bin/time --format=%e -o $TIMELOG --append"
 KERNEL="linux-3.6"
 KERNEL_TAR="$KERNEL.tar.bz2"
 
-if [[ -n "$REPTS_LIM" ]]; then
+if [[ -n "$REPTS_LIM" && $REPTS_LIM -lt $REPTS ]]; then
 	REPTS="$REPTS_LIM"
 fi
 
