@@ -127,7 +127,8 @@ function common_test()
 	$SCP "tests/common.sh" root@$remote:$remote_dir/.
 	$SCP "tests/$cmdname" root@$remote:$remote_dir/.
 	while [[ -n $1 ]]; do
-		scp -q "$TOOLS/$1" root@$remote:$remote_dir/.
+		file=`basename $1`
+		scp -q "$TOOLS/$file" root@$remote:$remote_dir/.
 		shift 1
 	done
 
@@ -215,6 +216,12 @@ function ws_arm_test()
 	common_test "$1" "$2" guest-driver vmexit-guest
 }
 
+function ws_x86_test()
+{
+	common_test "$1" "$2" qemu-system-x86_64 vmexit.flat en-us common modifiers \
+		tools_x86/*.bin tools_x86/*.rom
+}
+
 source tests/apache.sh
 source tests/mysql.sh
 
@@ -222,11 +229,11 @@ source tests/mysql.sh
 # Test Harness
 #
 
-TESTS="hackbench untar curl1k curl1g apache mysql dd_write dd_read dd_rw kernel_compile ws_arm"
+TESTS="hackbench untar curl1k curl1g apache mysql dd_write dd_read dd_rw kernel_compile ws_arm ws_x86"
 GUEST_ONLY_TESTS=""
-HOST_ONLY_TESTS="ws_arm"
+HOST_ONLY_TESTS="ws_arm ws_x86"
 ARM_ONLY_TESTS="ws_arm"
-x86_ONLY_TESTS=""
+x86_ONLY_TESTS="ws_x86"
 
 fn_exists()
 {
@@ -235,7 +242,8 @@ fn_exists()
 
 function belongsto()
 {
-	for _X in ${2[@]}; do
+	ARR=( $2 )
+	for _X in ${ARR[@]}; do
 		if [[ "$_X" == "$1" ]]; then
 			return 1
 		fi
