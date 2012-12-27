@@ -4,6 +4,6 @@ source common.sh
 
 for i in `seq 1 $REPTS`; do
 	echo -n "."
-	./guest-driver vmexit | grep iterations | sed 's/.*= //g' >> $TIMELOG
+	./guest-driver vmexit | tee >(grep iterations | sed 's/.*= //g' >> $TIMELOG)
 done
 echo ""

@@ -6,6 +6,7 @@ HOST_DIR=""
 GUEST_DIR=""
 GUEST_ALIVE=0
 APACHE_STARTED=""
+MYSQL_STARTED=""
 
 echo "" > /tmp/kvmperf.log
 
@@ -36,6 +37,11 @@ early_exit()
 	if [[ -n "$APACHE_STARTED" ]]; then
 		echo -n "Stopping service apache2 on $APACHE_STARTED..."
 		$SSH 2>/dev/null 1>/dev/null root@$APACHE_STARTED "service apache2 stop"
+		echo "done"
+	fi
+	if [[ -n "$MYSQL_STARTED" ]]; then
+		echo -n "Stopping service mysql on $MYSQL_STARTED..."
+		$SSH 2>/dev/null 1>/dev/null root@$MYSQL_STARTED "service mysql stop"
 		echo "done"
 	fi
 	echo "Exiting!"
@@ -210,6 +216,7 @@ function ws_arm_test()
 }
 
 source tests/apache.sh
+source tests/mysql.sh
 
 ##########################################################################
 # Test Harness
@@ -257,7 +264,7 @@ function run_test
 	return 0
 }
 
-TESTS="hackbench untar curl1k curl1g dd_write dd_read dd_rw apache kernel_compile "
+TESTS="hackbench untar curl1k curl1g apache mysql dd_write dd_read dd_rw kernel_compile "
 #TESTS="hackbench untar curl1k curl1g kernel_compile "
 HOST_TESTS="ws_arm"
 
