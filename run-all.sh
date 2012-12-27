@@ -198,7 +198,45 @@ function dd_write_test()
 
 function dd_read_test()
 {
-	common_test "$1" "$2"
+	ORIG_OUTFILE="$OUTFILE"
+	OUTFILE=/tmp/.results
+
+	common_test "$1_prepare" "$2"
+
+	if [[ $GUEST_ALIVE == 0 ]]; then
+		for i in `seq 1 $REPTS`; do
+			common_test "$1" "$2"
+
+			sync
+			sudo bash -c "echo 3 > /proc/sys/vm/drop_caches"
+		done
+	else
+		# VM must be rebooted between each run here
+		shutdown_guest
+		for i in `seq 1 $REPTS`; do
+			sync
+			sudo bash -c "echo 3 > /proc/sys/vm/drop_caches"
+
+			start_guest
+			if [[ ! $? == 0 ]]; then
+				echo "Error starting guest - check logfile!" >&2
+				return 1
+			fi
+
+			wait_for_remote $GUEST1
+			if [[ ! $? == 0 ]]; then
+				echo "Guest didn't respond in a timely manner - check logfile!" >&2
+				return 1
+			fi
+
+			common_test "$1" "$2"
+
+			shutdown_guest
+		done
+	fi
+
+	cat "$OUTFILE" >> "$ORIG_OUTFILE"
+	OUTFILE="$ORIG_OUTFILE"
 }
 
 function dd_rw_test()
