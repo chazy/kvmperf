@@ -225,34 +225,46 @@ source tests/mysql.sh
 TESTS="hackbench untar curl1k curl1g apache mysql dd_write dd_read dd_rw kernel_compile ws_arm"
 GUEST_ONLY_TESTS=""
 HOST_ONLY_TESTS="ws_arm"
+ARM_ONLY_TESTS="ws_arm"
+x86_ONLY_TESTS=""
 
 fn_exists()
 {
     type $1 2>/dev/null | grep -q 'is a function' 1> /dev/null 2>&1
 }
 
-is_guest_only()
+function belongsto()
 {
-	TEST="$1"
-	GUEST_ONLY_TESTS=( $GUEST_ONLY_TESTS )
-	for _T in ${GUEST_ONLY_TESTS[@]}; do
-		if [[ "$_T" == "$TEST" ]]; then
+	for _X in ${2[@]}; do
+		if [[ "$_X" == "$1" ]]; then
 			return 1
 		fi
 	done
 	return 0
 }
 
+is_guest_only()
+{
+	belongsto $1 "$GUEST_ONLY_TESTS"
+	return $?
+}
+
 is_host_only()
 {
-	TEST="$1"
-	HOST_ONLY_TESTS=( $HOST_ONLY_TESTS )
-	for _T in ${HOST_ONLY_TESTS[@]}; do
-		if [[ "$_T" == "$TEST" ]]; then
-			return 1
-		fi
-	done
-	return 0
+	belongsto $1 "$HOST_ONLY_TESTS"
+	return $?
+}
+
+is_arm_only()
+{
+	belongsto $1 "$ARM_ONLY_TESTS"
+	return $?
+}
+
+is_x86_only()
+{
+	belongsto $1 "$x86_ONLY_TESTS"
+	return $?
 }
 
 function run_test
@@ -261,6 +273,19 @@ function run_test
 
 	RUN_IN_GUEST=1
 	RUN_ON_HOST=1
+
+	is_arm_only $TEST
+	ARM_ONLY=$?
+	is_x86_only $TEST
+	X86_ONLY=$?
+	if [[ "$ARCH" == "x86" && $ARM_ONLY == 1 ]]; then
+		echo "Skipping ARM-only test: $TEST"
+		return 1
+	elif [[ "$ARCH" == "arm" && $X86_ONLY == 1 ]]; then
+		echo "Skipping x86-only test: $TEST"
+		return 1
+	fi
+
 
 	is_host_only "$TEST"
 	if [[ $? == 1 ]]; then

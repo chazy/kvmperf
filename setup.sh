@@ -58,6 +58,7 @@ if [[ "$ARCH" == "x86" ]]; then
 	TOOLS=tools_x86
 	VM_CONSOLE=""
 else
+	ARCH="arm"
 	VM_CONSOLE=/tmp/ubuntu.console
 	START_VM_COMMAND="cd /root && ./run-ubuntu.sh --console $VM_CONSOLE -m 1536"
 	SHUTDOWN_VM_COMMAND="pkill -9 qemu-system-arm"
