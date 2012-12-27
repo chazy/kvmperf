@@ -264,7 +264,7 @@ function run_test
 
 	is_host_only "$TEST"
 	if [[ $? == 1 ]]; then
-		RUN_IN_GUEST = 0
+		RUN_IN_GUEST=0
 	fi
 
 	is_guest_only "$TEST"
