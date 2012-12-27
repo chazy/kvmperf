@@ -360,7 +360,9 @@ do
 		exit 1
 		;;
 	  *)
-		TESTS="$1"
+		if [[ -n "$1" ]]; then
+			TESTS="$1"
+		fi
 		shift 1
 		break
 		;;
@@ -370,7 +372,7 @@ done
 #TODO: Don't allow a host-only test to become a guest-only test... eh.
 if [[ $HONLY == 1 ]]; then
 	HOST_ONLY_TESTS="$TESTS"
-else
+elif [[ $GONLY == 1 ]]; then
 	GUEST_ONLY_TESTS="$TESTS"
 fi
 
