@@ -60,7 +60,7 @@ function shutdown_guest()
 	GUEST_ALIVE=0
 	echo "Shutting down guest" 2>&1 | tee -a $LOGFILE
 	ssh root@$GUEST1 "halt -p"
-	sleep 3
+	sleep 20
 	ssh root@$HOST "$SHUTDOWN_VM_COMMAND" 2>&1 | tee -a $LOGFILE
 	sleep 1
 	if [[ -n "$VM_CONSOLE" ]]; then
@@ -75,7 +75,7 @@ function wait_for_remote()
 	remote=$1
 	echo "Waiting for $remote to become alive" >> $LOGFILE
 	wait=1
-	timeout=30
+	timeout=120
 	while [[ $wait == 1 && $timeout -gt 0 ]]; do
 		ping -q -c 1 $remote > /dev/null
 		wait=$?
