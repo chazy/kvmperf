@@ -29,11 +29,6 @@ early_exit()
 		ssh root@$GUEST1 "rm -rf $GUEST_DIR"
 		echo "done"
 	fi
-	if [[ $GUEST_ALIVE == 1 ]]; then
-		echo -n "Shutting down VM..."
-		shutdown_guest
-		echo "done"
-	fi
 	if [[ -n "$APACHE_STARTED" ]]; then
 		echo -n "Stopping service apache2 on $APACHE_STARTED..."
 		$SSH 2>/dev/null 1>/dev/null root@$APACHE_STARTED "service apache2 stop"
@@ -42,6 +37,11 @@ early_exit()
 	if [[ -n "$MYSQL_STARTED" ]]; then
 		echo -n "Stopping service mysql on $MYSQL_STARTED..."
 		$SSH 2>/dev/null 1>/dev/null root@$MYSQL_STARTED "service mysql stop"
+		echo "done"
+	fi
+	if [[ $GUEST_ALIVE == 1 ]]; then
+		echo -n "Shutting down VM..."
+		shutdown_guest
 		echo "done"
 	fi
 	echo "Exiting!"
