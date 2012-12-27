@@ -4,8 +4,6 @@ function mysql_test()
 	remote="$2"	# dns/ip for machine to test
 	shift 2
 
-	ab=`which ab`
-
 	NR_REQUESTS=1000
 
 	# Make sure apache and sysbench are installed and disabled

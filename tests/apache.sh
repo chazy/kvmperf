@@ -4,7 +4,7 @@ function apache_test()
 	remote="$2"	# dns/ip for machine to test
 	shift 2
 
-	ab=`which ab`
+	ab=/usr/bin/ab
 
 	NR_REQUESTS=1000
 
