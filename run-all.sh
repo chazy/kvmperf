@@ -210,6 +210,9 @@ function dd_read_test()
 
 	if [[ $GUEST_ALIVE == 0 ]]; then
 		for i in `seq 1 $REPTS`; do
+			ssh root@$remote "sync"
+			ssh root@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
+
 			rm "$OUTFILE"
 			common_test "$1" "$2"
 			echo "================= reading content from $OUTFILE ============="
