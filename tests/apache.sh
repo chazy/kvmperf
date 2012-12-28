@@ -30,7 +30,7 @@ function apache_test()
 	echo ""
 
 	# Output in nice format as well
-	echo -en "$uut (${remote})\t" >> $OUTFILE
+	echo -en " $uut (${remote})\t" >> $OUTFILE
 	cat /tmp/time.txt | tr '\n' '\t' >> $OUTFILE
 	echo >> $OUTFILE
 
