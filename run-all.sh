@@ -216,8 +216,8 @@ function dd_read_test()
 			cat "$OUTFILE"
 			cat "$OUTFILE" | awk '{ print $3 }' | tr '\n' '\t' >> "$ORIG_OUTFILE"
 
-			sync
-			sudo bash -c "echo 3 > /proc/sys/vm/drop_caches"
+			ssh root@$remote "sync"
+			ssh root@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
 		done
 	else
 		# VM must be rebooted between each run here
@@ -225,8 +225,8 @@ function dd_read_test()
 			shutdown_guest
 
 			rm "$OUTFILE"
-			sync
-			sudo bash -c "echo 3 > /proc/sys/vm/drop_caches"
+			ssh root@$remote "sync"
+			ssh root@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
 
 			start_guest
 			if [[ ! $? == 0 ]]; then
