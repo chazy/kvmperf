@@ -198,22 +198,33 @@ function dd_write_test()
 
 function dd_read_test()
 {
+	uut="$1"	# unit under test
+	remote="$2"	# dns/ip for machine to test
+
 	ORIG_OUTFILE="$OUTFILE"
 	OUTFILE=/tmp/.results
+
+	echo -en " $uut (${remote})\t" >> $ORIG_OUTFILE
 
 	common_test "$1_prepare" "$2"
 
 	if [[ $GUEST_ALIVE == 0 ]]; then
 		for i in `seq 1 $REPTS`; do
+			rm "$OUTFILE"
 			common_test "$1" "$2"
+			echo "================= reading content from $OUTFILE ============="
+			cat "$OUTFILE"
+			cat "$OUTFILE" | awk '{ print $3 }' | tr '\n' '\t' >> "$ORIG_OUTFILE"
 
 			sync
 			sudo bash -c "echo 3 > /proc/sys/vm/drop_caches"
 		done
 	else
 		# VM must be rebooted between each run here
-		shutdown_guest
 		for i in `seq 1 $REPTS`; do
+			shutdown_guest
+
+			rm "$OUTFILE"
 			sync
 			sudo bash -c "echo 3 > /proc/sys/vm/drop_caches"
 
@@ -230,13 +241,16 @@ function dd_read_test()
 			fi
 
 			common_test "$1" "$2"
-
-			shutdown_guest
+			echo "================= reading content from $OUTFILE ============="
+			cat "$OUTFILE"
+			cat "$OUTFILE" | awk '{ print $3 }' | tr '\n' '\t' >> "$ORIG_OUTFILE"
 		done
 	fi
 
-	cat "$OUTFILE" >> "$ORIG_OUTFILE"
+	ssh root@$remote "rm -f /root/foo"
+
 	OUTFILE="$ORIG_OUTFILE"
+	echo "" >> $OUTFILE
 }
 
 function dd_rw_test()
