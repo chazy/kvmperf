@@ -243,6 +243,8 @@ function dd_read_test()
 				return 1
 			fi
 
+			sleep 20
+
 			common_test "$1" "$2"
 			echo "================= reading content from $OUTFILE ============="
 			cat "$OUTFILE"
