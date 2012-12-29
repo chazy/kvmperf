@@ -451,7 +451,7 @@ do
 		;;
 	  *)
 		if [[ -n "$1" ]]; then
-			TESTS="$1"
+			TESTS="$@"
 		fi
 		shift 1
 		break
