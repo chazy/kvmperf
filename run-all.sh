@@ -471,18 +471,18 @@ echo -n "Performing KVM benchmarks (" >> $OUTFILE
 date | tr '\n' ')' >> $OUTFILE
 echo >> $OUTFILE
 
-i=1
+__i=1
 TESTS=( $TESTS )
 total=$(( ${#TESTS[@]} + ${#HOST_TESTS[@]} ))
 for TEST in ${TESTS[@]}; do
 	echo "============================================" | tee -a $LOGFILE
-	echo -n "Test $i of $total " | tee -a $LOGFILE
+	echo -n "Test $__i of $total " | tee -a $LOGFILE
 
 	run_test "$TEST"
 
 	echo "============================================" | tee -a $LOGFILE
 	echo -e "\n\n" | tee -a $LOGFILE
-	i=$(($i+1))
+	__i=$(($__i+1))
 done
 
 echo "Done. Results in: $OUTFILE"
