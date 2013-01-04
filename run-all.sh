@@ -332,6 +332,26 @@ is_x86_only()
 	return $?
 }
 
+# Run with
+# arg1: test name
+# arg2: machine host name
+# arg3: remote name of host/vm being tested
+function annotate()
+{
+	test_name="$1"
+	remote="$2"
+	test_host="$3"
+
+	if [[ "$ARCH" == "x86" ]]; then
+		return 0
+	fi
+
+	scp -q "$TOOLS/annotate" root@$remote:/tmp/.
+	remote_cmd="chmod a+x /tmp/annotate && /tmp/annotate \"($test_host) $test_name\""
+	$SSH root@$remote "$remote_cmd" 2>&1
+	return 0
+}
+
 function run_test
 {
 	TEST="$1"
@@ -371,8 +391,10 @@ function run_test
 
 	# Run test on native side (unless a guest-only test)
 	if [[ $RUN_ON_HOST == 1 ]]; then
+		annotate "$TEST start" "$HOST" "$HOST"
 		echo -en "native:\t" | tee -a $LOGFILE
 		eval "${TEST}_test $TEST $HOST"
+		annotate "$TEST end" "$HOST" "$HOST"
 	fi
 
 	if [[ $RUN_IN_GUEST == 1 ]]; then
@@ -388,8 +410,10 @@ function run_test
 			echo "Guest didn't respond in a timely manner - check logfile!" >&2
 			return 1
 		fi
+		annotate "$TEST start" "$HOST" "$GUEST1"
 		echo -en "   kvm:\t"
 		eval "${TEST}_test $TEST $GUEST1"
+		annotate "$TEST end" "$HOST" "$GUEST1"
 
 		shutdown_guest $GUEST1
 	fi
