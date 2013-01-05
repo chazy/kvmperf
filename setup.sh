@@ -7,6 +7,7 @@ else
 	HOST="arndale"
 	GUEST1="guest1"
 	WEBHOST="192.168.27.90"
+	POWERHOST="macair"
 	REPTS="10"
 
 	echo -n "What's the architecture? [$ARCH]:"
@@ -36,6 +37,12 @@ else
 		GUEST="$_WEBHOST"
 	fi
 
+	echo -n "What's the DNS/IP of the power measurement host? [$POWERHOST]:"
+	read _POWERHOST
+	if [[ -n "$_POWERHOST" ]]; then
+		GUEST="$_POWERHOST"
+	fi
+
 	echo -n "How many repititions of each test do you want? [$REPTS]:"
 	read _REPTS
 	if [[ -n "$_REPTS" ]]; then
@@ -46,6 +53,7 @@ else
 	echo "HOST=\"$HOST\"" >> .localconf
 	echo "GUEST1=\"$GUEST1\"" >> .localconf
 	echo "WEBHOST=\"$WEBHOST\"" >> .localconf
+	echo "POWERHOST=\"$POWERHOST\"" >> .localconf
 	echo "REPTS=\"$REPTS\"" >> .localconf
 fi
 

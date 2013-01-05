@@ -7,6 +7,7 @@ GUEST_DIR=""
 GUEST_ALIVE=0
 APACHE_STARTED=""
 MYSQL_STARTED=""
+POWER_PID=0
 
 echo "" > /tmp/kvmperf.log
 
@@ -43,6 +44,13 @@ early_exit()
 		echo -n "Shutting down VM..."
 		shutdown_guest
 		echo "done"
+	fi
+	if [[ ! $POWER_PID == 0 ]]; then
+		echo -n "Shutting down power probe..."
+		$SSH root@$POWERHOST "pkill -SIGINT arm-probe"
+		sleep 1
+		kill $POWER_PID
+		POWER_PID=0
 	fi
 	echo "Exiting!"
 	exit 1
@@ -334,22 +342,50 @@ is_x86_only()
 
 # Run with
 # arg1: test name
-# arg2: machine host name
-# arg3: remote name of host/vm being tested
-function annotate()
+# arg2: remote name of host/vm being tested
+function power_start()
 {
 	test_name="$1"
-	remote="$2"
-	test_host="$3"
+	test_host="$2"
 
 	if [[ "$ARCH" == "x86" ]]; then
 		return 0
 	fi
 
-	scp -q "$TOOLS/annotate" root@$remote:/tmp/.
-	remote_cmd="chmod a+x /tmp/annotate && /tmp/annotate \"($test_host) $test_name\""
-	$SSH root@$remote "$remote_cmd" 2>&1
-	return 0
+	remote_cmd='cd /home/christoffer/src/arm-probe && arm-probe/arm-probe -c POWER0 > /tmp/power.values 2>/dev/null'
+	$SSH root@$POWERHOST "bash -c '$remote_cmd'" &
+	POWER_PID=$!
+}
+
+# Run with
+# arg1: test name
+# arg2: remote name of host/vm being tested
+function power_end()
+{
+	test_name="$1"
+	test_host="$2"
+
+	if [[ $_OFN == 1 ]]; then
+		out_file="power.values.$test_name.$test_host"
+	else
+		out_file="power.values.$test_name.$test_host.$(( $_OFN - 1 ))"
+	fi
+
+	if [[ "$ARCH" == "x86" ]]; then
+		return 0
+	fi
+
+	if [[ $POWER_PID == 0 ]]; then
+		echo "Error: Do not have PID of ssh to power measurement session!" >&2
+		return 1
+	fi
+
+	$SSH root@$POWERHOST "pkill -SIGINT arm-probe"
+	sleep 2
+
+	kill $POWER_PID
+	POWER_PID=0
+	scp -q root@$POWERHOST:/tmp/power.values $out_file
 }
 
 function run_test
@@ -391,10 +427,10 @@ function run_test
 
 	# Run test on native side (unless a guest-only test)
 	if [[ $RUN_ON_HOST == 1 ]]; then
-		annotate "$TEST start" "$HOST" "$HOST"
+		power_start "$TEST" "$HOST"
 		echo -en "native:\t" | tee -a $LOGFILE
 		eval "${TEST}_test $TEST $HOST"
-		annotate "$TEST end" "$HOST" "$HOST"
+		power_end "$TEST" "$HOST"
 	fi
 
 	if [[ $RUN_IN_GUEST == 1 ]]; then
@@ -410,10 +446,10 @@ function run_test
 			echo "Guest didn't respond in a timely manner - check logfile!" >&2
 			return 1
 		fi
-		annotate "$TEST start" "$HOST" "$GUEST1"
+		power_start "$TEST" "$GUEST1"
 		echo -en "   kvm:\t"
 		eval "${TEST}_test $TEST $GUEST1"
-		annotate "$TEST end" "$HOST" "$GUEST1"
+		power_end "$TEST" "$GUEST1"
 
 		shutdown_guest $GUEST1
 	fi
