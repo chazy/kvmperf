@@ -1,2 +1,3 @@
 .localconf
-kvmperf.values*
+*values*
+avg
