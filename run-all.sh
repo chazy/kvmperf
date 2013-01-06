@@ -8,6 +8,7 @@ GUEST_ALIVE=0
 APACHE_STARTED=""
 MYSQL_STARTED=""
 POWER_PID=0
+DO_POWER=0
 
 echo "" > /tmp/kvmperf.log
 
@@ -348,6 +349,10 @@ function power_start()
 	test_name="$1"
 	test_host="$2"
 
+	if [[ $DO_POWER == 0 ]]; then
+		return 0
+	fi
+
 	if [[ "$ARCH" == "x86" ]]; then
 		return 0
 	fi
@@ -364,6 +369,10 @@ function power_end()
 {
 	test_name="$1"
 	test_host="$2"
+
+	if [[ $DO_POWER == 0 ]]; then
+		return 0
+	fi
 
 	if [[ $_OFN == 1 ]]; then
 		out_file="power.values.$test_name.$test_host"
@@ -466,6 +475,7 @@ usage() {
 	U="${U}Options:\n"
 	U="$U    --host-only:       Only run test(s) on host\n"
 	U="$U    --guest-only:      Only run test(s) on VM guests\n"
+	U="$U    --power:           Also measure power of runs\n"
 	U="$U    -h | --help:       Show this message\n"
 	U="$U\n"
 	U="${U}Available tests are:\n"
@@ -495,6 +505,10 @@ do
 			exit 1
 		fi
 		GONLY=1
+		shift 1
+		;;
+	  --power)
+		DO_POWER=1
 		shift 1
 		;;
 	  -h | --help)
