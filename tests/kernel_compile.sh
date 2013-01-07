@@ -8,11 +8,11 @@ source common.sh
 #mount -t ramfs none ram
 #pushd ram
 
-wget -q "http://$WEBHOST/$KERNEL_TAR"
+wget "http://$WEBHOST/$KERNEL_TAR"
 if [[ ! $? == 0 ]]; then
 	exit 1
 fi
-tar xjf $KERNEL_TAR
+tar xvjf $KERNEL_TAR
 pushd $KERNEL
 
 make vexpress_defconfig
