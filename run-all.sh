@@ -272,6 +272,23 @@ function dd_rw_test()
 	common_test "$1" "$2"
 }
 
+function memcached_test()
+{
+	uut="$1"	# unit under test
+	remote="$2"	# dns/ip for machine to test
+
+	MEMCACHED=libmemcached-1.0.15
+
+	# Make sure memcached and memslap are installed
+	$SCP tools/$MEMCACHED.tar.gz root@$remote:/tmp/$MEMCACHED.tar.gz
+	ssh root@$remote "cat > /tmp/i.sh && chmod a+x /tmp/i.sh && /tmp/i.sh" < tests/memcached_install.sh | \
+		tee -a $LOGFILE
+
+	common_test "$uut" "$remote"
+
+	ssh root@$remote "service memcached stop" | tee -a $LOGFILE
+}
+
 function fake_test()
 {
 	common_test "$1" "$2"
@@ -295,7 +312,7 @@ source tests/mysql.sh
 # Test Harness
 #
 
-TESTS="hackbench untar curl1k curl1g apache mysql dd_write dd_read dd_rw kernel_compile ws_arm ws_x86"
+TESTS="hackbench untar curl1k curl1g apache mysql dd_rw kernel_compile memcached ws_arm ws_x86"
 GUEST_ONLY_TESTS=""
 HOST_ONLY_TESTS="ws_arm ws_x86"
 ARM_ONLY_TESTS="ws_arm"
