@@ -7,5 +7,7 @@ $CMD
 
 for i in `seq 1 $REPTS`; do
 	echo " *** Test $i of $REPTS ***"
+	power_start $i
 	$TIME $CMD
+	power_end $i
 done

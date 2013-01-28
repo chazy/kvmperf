@@ -9,12 +9,26 @@ static int x86mode = 0;
 
 static double get_power(char *line)
 {
-	char *str, *str2, *saveptr = NULL;
+	char *str, *str2 = NULL, *saveptr = NULL;
 	while (str = strtok_r(line, " \t", &saveptr)) {
 	       line = NULL;
 	       str2 = str;
 	}
-	return atof(str2);
+	if (str2)
+		return atof(str2);
+	else
+		return 0.0;
+}
+
+void usage(const char *arg0)
+{
+	fprintf(stderr, "Usage: %s [-x] [input file]\n\n"
+		"Options:\n"
+		"             -x:  x86 data format\n"
+		"   [input file]:  input file name, stdin if ommitted",
+		arg0);
+	exit(EXIT_FAILURE);
+
 }
 
 int main(int argc, char * const argv[])
@@ -34,7 +48,7 @@ int main(int argc, char * const argv[])
 			x86mode = 1;
 			break;
 		default:
-			fprintf(stderr, "Unknown argument: %s\n", argv[optind]);
+			usage(argv[0]);
 		}
 	}
 
@@ -54,18 +68,25 @@ int main(int argc, char * const argv[])
 
 
 	while (getline(&lineptr, &bufsize, stream) > 0) {
+		double line_power;
 		if (!x86mode && lineptr[0] == '#')
 			continue;
 		if (!x86mode && !strncmp(lineptr, "time", bufsize))
 			continue;
 		if (x86mode && (lineptr[0] < '0' || lineptr[0] > '9'))
 			continue;
-		avg = (get_power(lineptr) + (double)datapoints * avg) /
+		line_power = get_power(lineptr);
+		if (line_power == 0.0)
+			continue;
+		avg = (line_power + (double)datapoints * avg) /
 			((double)datapoints + 1);
 		datapoints++;
 	}
 
-	printf("%f\n", avg);
+	if (stream == stdin)
+		printf("%f", avg);
+	else
+		printf("%f\n", avg);
 
 	return 0;
 }

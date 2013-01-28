@@ -18,6 +18,8 @@ for i in `seq 1 $REPTS`; do
 	rm foo
 	sync
 	echo 3 > /proc/sys/vm/drop_caches
+	power_start $i
 	$TIME $DD > /dev/null 2>&1
+	power_end $i
 done
 echo ""

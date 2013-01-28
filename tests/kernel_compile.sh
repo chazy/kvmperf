@@ -21,7 +21,9 @@ make -j10 zImage
 for i in `seq 1 $REPTS`; do
 	echo " *** Test $i of $REPTS ***"
 	make clean
+	power_start $i
 	$TIME make -j10 zImage
+	power_end $i
 done
 popd
 mv $KERNEL/$TIMELOG .

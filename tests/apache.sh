@@ -17,11 +17,16 @@ function apache_test()
 	ssh root@$remote "service apache2 start" | tee -a $LOGFILE
 	APACHE_STARTED="$remote"
 
+	rm -f /tmp/power.values.*
+	POWEROUT=/tmp
+
 	rm -f /tmp/time.txt
 	touch /tmp/time.txt
 	for i in `seq 1 $REPTS`; do
+		power_start $i
 		$ab -n $NR_REQUESTS -c 100 http://$remote/gcc/index.html | \
 			tee >(grep 'Requests per second' | awk '{ print $4 }' >> /tmp/time.txt)
+		power_end $i
 	done;
 
 	# Get time stats
@@ -33,6 +38,18 @@ function apache_test()
 	echo -en " $uut (${remote})\t" >> $OUTFILE
 	cat /tmp/time.txt | tr '\n' '\t' >> $OUTFILE
 	echo >> $OUTFILE
+
+	# Get power stats
+	if [[ $DO_POWER == 1 ]]; then
+		echo "Downloading power stats" | tee -a $LOGFILE
+		echo -en " $uut (${remote} - power)\t" >> $OUTFILE
+		for powerfile in `ls -1 /tmp/power.values.*`; do
+			piter=`basename "$powefile" | awk -F . '{print $NF}'`
+			cat $powerfile | ./avg >> $OUTFILE
+			echo -en "\t" >> $OUTFILE
+		done
+		echo "" >> $OUTFILE
+	fi
 
 	ssh root@$remote "service apache2 stop" | tee -a $LOGFILE
 	APACHE_STARTED=""

@@ -134,12 +134,19 @@ function common_test()
 	ssh root@$remote "mkdir $remote_dir"
 	$SCP ".localconf" root@$remote:$remote_dir/.
 	$SCP "tests/common.sh" root@$remote:$remote_dir/.
+	$SCP "tests/power.sh" root@$remote:$remote_dir/.
 	$SCP "tests/$cmdname" root@$remote:$remote_dir/.
 	while [[ -n $1 ]]; do
 		file=`basename $1`
 		scp -q "$TOOLS/$file" root@$remote:$remote_dir/.
 		shift 1
 	done
+	if [[ $DO_POWER == 1 ]]; then
+		echo "Measuring power for $uut on $remote" | tee -a $LOGFILE
+		echo "DO_POWER=1" > /tmp/powerconf
+		echo "POWEROUT=\"$remote_dir\"" >> /tmp/powerconf
+		$SCP /tmp/powerconf root@$remote:$remote_dir/powerconf
+	fi
 
 	# Actually run the test command
 	rm -f /tmp/time.txt
@@ -163,6 +170,21 @@ function common_test()
 	echo -en " $uut (${remote})\t" >> $OUTFILE
 	cat /tmp/time.txt | tr '\n' '\t' | tr '\r' ' ' >> $OUTFILE
 	echo "" >> $OUTFILE
+
+	# Get power stats
+	if [[ $DO_POWER == 1 ]]; then
+		rm -f /tmp/power.values.*
+		echo "Downloading power stats" | tee -a $LOGFILE
+		$SCP root@$remote:$remote_dir/power.values.* /tmp/.
+		echo -en " $uut (${remote} - power)\t" >> $OUTFILE
+		for powerfile in `ls -1 /tmp/power.values.*`; do
+			piter=`basename "$powefile" | awk -F . '{print $NF}'`
+			cat $powerfile | ./avg >> $OUTFILE
+			echo -en "\t" >> $OUTFILE
+		done
+		echo "" >> $OUTFILE
+	fi
+
 
 	# Clean up
 	echo "Cleaning up" | tee -a $LOGFILE
@@ -358,72 +380,6 @@ is_x86_only()
 	return $?
 }
 
-function power_start_x86()
-{
-	powerstat -o /tmp/power.values -d 0 1 &
-	POWER_PID=$!
-	return 0
-}
-
-# Run with
-# arg1: test name
-# arg2: remote name of host/vm being tested
-function power_start()
-{
-	test_name="$1"
-	test_host="$2"
-
-	if [[ $DO_POWER == 0 ]]; then
-		return 0
-	fi
-
-	if [[ "$ARCH" == "x86" ]]; then
-		power_start_x86
-		return $?
-	fi
-
-	remote_cmd='cd /home/christoffer/src/arm-probe && arm-probe/arm-probe -c POWER0 > /tmp/power.values 2>/dev/null'
-	$SSH root@$POWERHOST "bash -c '$remote_cmd'" &
-	POWER_PID=$!
-}
-
-# Run with
-# arg1: test name
-# arg2: remote name of host/vm being tested
-function power_end()
-{
-	test_name="$1"
-	test_host="$2"
-
-	if [[ $DO_POWER == 0 ]]; then
-		return 0
-	fi
-
-	if [[ $_OFN == 1 ]]; then
-		out_file="power.values.$test_name.$test_host"
-	else
-		out_file="power.values.$test_name.$test_host.$(( $_OFN - 1 ))"
-	fi
-
-	if [[ "$ARCH" == "x86" ]]; then
-		kill $POWER_PID
-		cp /tmp/power.values $out_file
-		return 0
-	fi
-
-	if [[ $POWER_PID == 0 ]]; then
-		echo "Error: Do not have PID of ssh to power measurement session!" >&2
-		return 1
-	fi
-
-	$SSH root@$POWERHOST "pkill -SIGINT arm-probe"
-	sleep 2
-
-	kill $POWER_PID
-	POWER_PID=0
-	scp -q root@$POWERHOST:/tmp/power.values $out_file
-}
-
 function run_test
 {
 	TEST="$1"
@@ -463,10 +419,8 @@ function run_test
 
 	# Run test on native side (unless a guest-only test)
 	if [[ $RUN_ON_HOST == 1 ]]; then
-		power_start "$TEST" "$HOST"
 		echo -en "native:\t" | tee -a $LOGFILE
 		eval "${TEST}_test $TEST $HOST"
-		power_end "$TEST" "$HOST"
 	fi
 
 	if [[ $RUN_IN_GUEST == 1 ]]; then
@@ -482,10 +436,8 @@ function run_test
 			echo "Guest didn't respond in a timely manner - check logfile!" >&2
 			return 1
 		fi
-		power_start "$TEST" "$GUEST1"
 		echo -en "   kvm:\t"
 		eval "${TEST}_test $TEST $GUEST1"
-		power_end "$TEST" "$GUEST1"
 
 		shutdown_guest $GUEST1
 	fi

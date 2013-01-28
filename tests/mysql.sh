@@ -1,3 +1,5 @@
+source tests/power.sh
+
 function mysql_test()
 {
 	uut="$1"	# unit under test
@@ -17,13 +19,17 @@ function mysql_test()
 	ssh root@$remote "sysbench --test=oltp --mysql-password=kvm prepare" | tee -a $LOGFILE
 
 	MYSQL_STARTED="$remote"
+	rm -f /tmp/power.values.*
+	POWEROUT=/tmp
 
 	# Exec
 	rm -f /tmp/time.txt
 	touch /tmp/time.txt
 	for i in `seq 1 $REPTS`; do
+		power_start $i
 		ssh root@$remote "sysbench --test=oltp --mysql-password=kvm run" | tee \
 			>(grep 'total time:' | awk '{ print $3 }' | sed 's/s//' >> /tmp/time.txt)
+		power_end $i
 	done;
 
 	# Cleanup
@@ -39,6 +45,19 @@ function mysql_test()
 	echo -en " $uut (${remote})\t" >> $OUTFILE
 	cat /tmp/time.txt | tr '\n' '\t' >> $OUTFILE
 	echo >> $OUTFILE
+
+	# Get power stats
+	if [[ $DO_POWER == 1 ]]; then
+		echo "Downloading power stats" | tee -a $LOGFILE
+		echo -en " $uut (${remote} - power)\t" >> $OUTFILE
+		for powerfile in `ls -1 /tmp/power.values.*`; do
+			piter=`basename "$powefile" | awk -F . '{print $NF}'`
+			cat $powerfile | ./avg >> $OUTFILE
+			echo -en "\t" >> $OUTFILE
+		done
+		echo "" >> $OUTFILE
+	fi
+
 
 	ssh root@$remote "service mysql stop" | tee -a $LOGFILE
 	MYSQL_STARTED=""
