@@ -45,7 +45,7 @@ early_exit()
 		shutdown_guest
 		echo "done"
 	fi
-	if [[ ! $POWER_PID == 0 ]]; then
+	if [[ ! $POWER_PID == 0 && "$ARCH" == "arm" ]]; then
 		echo -n "Shutting down power probe..."
 		$SSH root@$POWERHOST "pkill -SIGINT arm-probe"
 		sleep 1
@@ -340,6 +340,13 @@ is_x86_only()
 	return $?
 }
 
+function power_start_x86()
+{
+	powerstat -o /tmp/power.values -d 0 1 &
+	POWER_PID=$!
+	return 0
+}
+
 # Run with
 # arg1: test name
 # arg2: remote name of host/vm being tested
@@ -349,7 +356,8 @@ function power_start()
 	test_host="$2"
 
 	if [[ "$ARCH" == "x86" ]]; then
-		return 0
+		power_start_x86
+		return $?
 	fi
 
 	remote_cmd='cd /home/christoffer/src/arm-probe && arm-probe/arm-probe -c POWER0 > /tmp/power.values 2>/dev/null'
@@ -372,6 +380,8 @@ function power_end()
 	fi
 
 	if [[ "$ARCH" == "x86" ]]; then
+		kill $POWER_PID
+		cp /tmp/power.values $out_file
 		return 0
 	fi
 
