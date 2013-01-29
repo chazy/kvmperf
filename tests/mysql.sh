@@ -8,7 +8,7 @@ function mysql_test()
 
 	NR_REQUESTS=1000
 
-	# Make sure apache and sysbench are installed and disabled
+	# Make sure mysql and sysbench are installed and disabled
 	ssh root@$remote "cat > /tmp/i.sh && chmod a+x /tmp/i.sh && /tmp/i.sh" < tests/mysql_install.sh | \
 		tee -a $LOGFILE
 

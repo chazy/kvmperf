@@ -7,7 +7,7 @@ function power_start()
 	fi
 
 	if [[ "$ARCH" == "arm" ]]; then
-		remote_cmd='cd /home/christoffer/src/arm-probe && arm-probe/arm-probe -c POWER0 > /tmp/power.values 2>/dev/null'
+		remote_cmd='cd /home/christoffer/src/arm-probe && git checkout config && arm-probe/arm-probe -c POWER0 > /tmp/power.values 2>/dev/null'
 	elif [[ "$ARCH" == "x86" ]]; then
 		remote_cmd='powerstat -o /tmp/power.values -d 0 1'
 	fi
