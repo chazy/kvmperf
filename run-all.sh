@@ -294,6 +294,11 @@ function dd_rw_test()
 	common_test "$1" "$2"
 }
 
+function apache_test()
+{
+	common_test "$1" "$2" gcc-html.tar.gz
+}
+
 function memcached_test()
 {
 	uut="$1"	# unit under test
@@ -327,7 +332,7 @@ function ws_x86_test()
 		tools_x86/*.bin tools_x86/*.rom
 }
 
-source tests/apache.sh
+#source tests/apache.sh
 source tests/mysql.sh
 
 ##########################################################################
