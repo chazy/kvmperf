@@ -100,7 +100,7 @@ function wait_for_remote()
 	if [[ $timeout == 0 ]]; then
 		return 1
 	else
-		sleep 3
+		sleep 20
 		return 0
 	fi
 }

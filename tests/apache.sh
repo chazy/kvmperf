@@ -6,7 +6,7 @@ function apache_test()
 
 	ab=/usr/bin/ab
 
-	NR_REQUESTS=1000
+	NR_REQUESTS=100000
 
 	# Make sure apache is installed and disabled
 	ssh root@$remote "cat > /tmp/i.sh && chmod a+x /tmp/i.sh && /tmp/i.sh" < tests/apache_install.sh | \
