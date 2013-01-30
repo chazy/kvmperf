@@ -3,17 +3,17 @@
 if [[ -f .localconf ]]; then
 	source .localconf
 else
-	ARCH="arm"
+	TESTARCH="arm"
 	HOST="arndale"
 	GUEST1="guest1"
 	WEBHOST="192.168.27.90"
 	POWERHOST="macair"
 	REPTS="10"
 
-	echo -n "What's the architecture? [$ARCH]:"
-	read _ARCH
-	if [[ -n "$_ARCH" ]]; then
-		ARCH="$_ARCH"
+	echo -n "What's the architecture? [$TESTARCH]:"
+	read _TESTARCH
+	if [[ -n "$_TESTARCH" ]]; then
+		TESTARCH="$_TESTARCH"
 	fi
 
 	echo -n "What's the DNS/IP of the host? [$HOST]:"
@@ -49,7 +49,7 @@ else
 		REPTS="$_REPTS"
 	fi
 
-	echo "ARCH=\"$ARCH\"" > .localconf
+	echo "TESTARCH=\"$TESTARCH\"" > .localconf
 	echo "HOST=\"$HOST\"" >> .localconf
 	echo "GUEST1=\"$GUEST1\"" >> .localconf
 	echo "WEBHOST=\"$WEBHOST\"" >> .localconf
@@ -60,13 +60,13 @@ fi
 echo ""
 
 # Commands
-if [[ "$ARCH" == "x86" ]]; then
+if [[ "$TESTARCH" == "x86" ]]; then
 	START_VM_COMMAND="virsh start guest1"
 	SHUTDOWN_VM_COMMAND="virsh -q destroy guest1"
 	TOOLS=tools_x86
 	VM_CONSOLE=""
 else
-	ARCH="arm"
+	TESTARCH="arm"
 	VM_CONSOLE=/tmp/ubuntu.console
 	START_VM_COMMAND="cd /root && ./run-ubuntu.sh --console $VM_CONSOLE -m 1536"
 	SHUTDOWN_VM_COMMAND="pkill -9 qemu-system-arm"

@@ -6,9 +6,9 @@ function power_start()
 		return 0
 	fi
 
-	if [[ "$ARCH" == "arm" ]]; then
+	if [[ "$TESTARCH" == "arm" ]]; then
 		remote_cmd='cd /home/christoffer/src/arm-probe && git checkout config && arm-probe/arm-probe -c POWER0 > /tmp/power.values 2>/dev/null'
-	elif [[ "$ARCH" == "x86" ]]; then
+	elif [[ "$TESTARCH" == "x86" ]]; then
 		remote_cmd='powerstat -o /tmp/power.values -d 0 1'
 	fi
 
@@ -29,9 +29,9 @@ function power_end()
 
 	out_file="power.values.$postfix"
 
-	if [[ "$ARCH" == "arm" ]]; then
+	if [[ "$TESTARCH" == "arm" ]]; then
 		remote_cmd='pkill -SIGINT arm-probe'
-	elif [[ "$ARCH" == "x86" ]]; then
+	elif [[ "$TESTARCH" == "x86" ]]; then
 		remote_cmd='pkill powerstat'
 	fi
 

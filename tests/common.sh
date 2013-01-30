@@ -20,7 +20,7 @@ if [[ -n "$REPTS_LIM" && $REPTS_LIM -lt $REPTS ]]; then
 fi
 
 # Host Type Specific Defines
-if [[ "$ARCH" == "x86" ]]; then
+if [[ "$TESTARCH" == "x86" ]]; then
 	export ARCH=arm
 	export CROSS_COMPILE=arm-linux-gnueabi-
 else # ARM

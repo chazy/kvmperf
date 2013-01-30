@@ -46,7 +46,7 @@ early_exit()
 		shutdown_guest
 		echo "done"
 	fi
-	if [[ ! $POWER_PID == 0 && "$ARCH" == "arm" ]]; then
+	if [[ ! $POWER_PID == 0 && "$TESTARCH" == "arm" ]]; then
 		echo -n "Shutting down power probe..."
 		$SSH root@$POWERHOST "pkill -SIGINT arm-probe"
 		sleep 1
@@ -391,10 +391,10 @@ function run_test
 	ARM_ONLY=$?
 	is_x86_only $TEST
 	X86_ONLY=$?
-	if [[ "$ARCH" == "x86" && $ARM_ONLY == 1 ]]; then
+	if [[ "$TESTARCH" == "x86" && $ARM_ONLY == 1 ]]; then
 		echo "Skipping ARM-only test: $TEST"
 		return 1
-	elif [[ "$ARCH" == "arm" && $X86_ONLY == 1 ]]; then
+	elif [[ "$TESTARCH" == "arm" && $X86_ONLY == 1 ]]; then
 		echo "Skipping x86-only test: $TEST"
 		return 1
 	fi
