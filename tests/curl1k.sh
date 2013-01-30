@@ -4,9 +4,13 @@ source common.sh
 
 URL="http://$WEBHOST/small"
 
-$TIME curl -s $URL > /dev/null
+$TIME curl $URL -o /dev/null
 rm $TIMELOG
 
 for i in `seq 1 $REPTS`; do
-	$TIME bash -c "for j in \`seq 1 1000\`; do curl -s $URL > /dev/null; done;"
+	echo -n "."
+	power_start $i
+	$TIME bash -c "for j in \`seq 1 1000\`; do curl -s $URL -o /dev/null; done;"
+	power_end $i
 done
+echo ""

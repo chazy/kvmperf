@@ -3,15 +3,17 @@
 if [[ -f .localconf ]]; then
 	source .localconf
 else
-	ARCH="arm"
+	TESTARCH="arm"
 	HOST="arndale"
 	GUEST1="guest1"
 	WEBHOST="192.168.27.90"
+	POWERHOST="macair"
+	REPTS="10"
 
-	echo -n "What's the architecture? [$ARCH]:"
-	read _ARCH
-	if [[ -n "$_ARCH" ]]; then
-		ARCH="$_ARCH"
+	echo -n "What's the architecture? [$TESTARCH]:"
+	read _TESTARCH
+	if [[ -n "$_TESTARCH" ]]; then
+		TESTARCH="$_TESTARCH"
 	fi
 
 	echo -n "What's the DNS/IP of the host? [$HOST]:"
@@ -35,26 +37,56 @@ else
 		WEBHOST="$_WEBHOST"
 	fi
 
-	echo "ARCH=\"$ARCH\"" > .localconf
+	echo -n "What's the DNS/IP of the power measurement host? [$POWERHOST]:"
+	read _POWERHOST
+	if [[ -n "$_POWERHOST" ]]; then
+		GUEST="$_POWERHOST"
+	fi
+
+	echo -n "How many repititions of each test do you want? [$REPTS]:"
+	read _REPTS
+	if [[ -n "$_REPTS" ]]; then
+		REPTS="$_REPTS"
+	fi
+
+	echo "TESTARCH=\"$TESTARCH\"" > .localconf
 	echo "HOST=\"$HOST\"" >> .localconf
 	echo "GUEST1=\"$GUEST1\"" >> .localconf
 	echo "WEBHOST=\"$WEBHOST\"" >> .localconf
+	echo "POWERHOST=\"$POWERHOST\"" >> .localconf
+	echo "REPTS=\"$REPTS\"" >> .localconf
 fi
 
 echo ""
 
 # Commands
-if [[ "$ARCH" == "x86" ]]; then
+if [[ "$TESTARCH" == "x86" ]]; then
 	START_VM_COMMAND="virsh start guest1"
 	SHUTDOWN_VM_COMMAND="virsh -q destroy guest1"
 	TOOLS=tools_x86
+	VM_CONSOLE=""
 else
-	START_VM_COMMAND="cd /root && ./run-ubuntu.sh --no-console -m 1536"
+	TESTARCH="arm"
+	VM_CONSOLE=/tmp/ubuntu.console
+	START_VM_COMMAND="cd /root && ./run-ubuntu.sh --console $VM_CONSOLE -m 1536"
 	SHUTDOWN_VM_COMMAND="pkill -9 qemu-system-arm"
 	TOOLS=tools
 fi
-SCP="scp -q"
-
 # Environment
 IFS=$(echo -en "\n\t ")
 LOGFILE=/tmp/kvmperf.log
+OUTFILE=kvmperf.values
+_OFN=1
+
+while [[ -e $OUTFILE ]]; do
+	OUTFILE=kvmperf.values.$_OFN
+	_OFN=$(( $_OFN + 1 ))
+done
+
+# Silent SCP command
+SSCP="scp -q"
+SCP="$SSCP"
+
+# Silent SSH command
+SSH="ssh"
+SSSH="ssh -q 1>/dev/null 2>/dev/null"
