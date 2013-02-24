@@ -23,6 +23,7 @@ usage() {
 	fi
 	U="${U}Usage: $0 [options] <guest-name> \n\n"
 	U="${U}Options:\n"
+	U="$U    -c | --CPU <nr>:       Number of cores (default 2)\n"
 	U="$U    -m | --mem <MB>:       Memory size (default 512)\n"
 	U="$U    -H | --hugetlbfs:      Use hugetlbfs on /hugetlbfs\n"
 	U="$U    -v | --virtio:         Use virtio block devices and networking\n"
@@ -42,6 +43,10 @@ usage() {
 while :
 do
 	case "$1" in
+	  -c | --cpu)
+		SMP="$2"
+		shift 2
+		;;
 	  -m | --mem)
 		MEMSIZE="$2"
 		shift 2
@@ -176,7 +181,7 @@ BOOT_CMD="console=ttyAMA0 mem=${MEMSIZE}M earlyprintk debug"
 
 if [[ $VIRTIO == 1 ]]; then
 	#IO_PARAMS="$IO_PARAMS -drive if=none,file=${IMG},id=vda"
-	write_id_section drive vda if none file "$IMG"
+	write_id_section drive vda if none file "$IMG" cache writethrough
 
 	#IO_PARAMS="$IO_PARAMS -device virtio-blk,transport=virtio-mmio.0,drive=vda"
 	write_section device driver virtio-blk transport virtio-mmio.0 drive vda
