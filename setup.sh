@@ -6,8 +6,8 @@ else
 	TESTARCH="arm"
 	HOST="arndale"
 	GUEST1="guest1"
-	WEBHOST="192.168.27.90"
-	POWERHOST="macair"
+	WEBHOST="webserver"
+	POWERHOST="powerhost"
 	REPTS="10"
 
 	echo -n "What's the architecture? [$TESTARCH]:"
