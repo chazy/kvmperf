@@ -6,8 +6,8 @@ else
 	TESTARCH="arm"
 	HOST="arndale"
 	GUEST1="guest1"
-	WEBHOST="192.168.27.90"
-	POWERHOST="macair"
+	WEBHOST="webserver"
+	POWERHOST="powerhost"
 	REPTS="10"
 
 	echo -n "What's the architecture? [$TESTARCH]:"
@@ -28,7 +28,7 @@ else
 	echo -n "What's the DNS/IP of the guest? [$GUEST1]:"
 	read _GUEST1
 	if [[ -n "$_GUEST1" ]]; then
-		GUEST="$_GUEST1"
+		GUEST1="$_GUEST1"
 	fi
 
 	echo -n "What's the DNS/IP of the web server? [$WEBHOST]:"
@@ -40,7 +40,7 @@ else
 	echo -n "What's the DNS/IP of the power measurement host? [$POWERHOST]:"
 	read _POWERHOST
 	if [[ -n "$_POWERHOST" ]]; then
-		GUEST="$_POWERHOST"
+		POWERHOST="$_POWERHOST"
 	fi
 
 	echo -n "How many repititions of each test do you want? [$REPTS]:"
