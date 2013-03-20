@@ -13,8 +13,6 @@ EOF
 chmod a+x dd_cmd.sh
 DD="./dd_cmd.sh"
 
-$DD > /dev/null 2>&1
-
 for i in `seq 1 $REPTS`; do
 	echo -n "."
 	rm bar

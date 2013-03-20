@@ -20,8 +20,6 @@ pushd $KERNEL
 
 make vexpress_defconfig
 echo "Configured kernel..."
-make -j10 zImage
-echo "Pre-compiled kernel..."
 
 for i in `seq 1 $REPTS`; do
 	echo " *** Test $i of $REPTS ***"

@@ -213,7 +213,8 @@ fi
 
 BOOT_CMD="$BOOT_CMD init=/sbin/init --no-log noplymouth"
 
-(write_section machine dtb $DTB kernel $KERNEL  accel kvm append "$BOOT_CMD" kernel_irqchip on)
+#(write_section machine dtb $DTB kernel $KERNEL  accel kvm append "$BOOT_CMD" kernel_irqchip on)
+(write_section machine dtb $DTB kernel $KERNEL  accel kvm append "$BOOT_CMD")
 
 if [[ $CONSOLE == 0 ]]; then
 	CONS="-serial null -display none"

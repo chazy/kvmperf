@@ -10,8 +10,10 @@ if [[ -f powerconf ]]; then
 	source powerconf
 fi
 
+COLDLOG=cold.txt
 TIMELOG=time.txt
 TIME="/usr/bin/time --format=%e -o $TIMELOG --append"
+COLDTIME="/usr/bin/time --format=%e -o $COLDLOG --append"
 KERNEL="linux-3.6"
 KERNEL_TAR="$KERNEL.tar.bz2"
 

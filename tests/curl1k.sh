@@ -4,7 +4,6 @@ source common.sh
 
 URL="http://$WEBHOST/small"
 
-$TIME curl $URL -o /dev/null
 rm $TIMELOG
 
 for i in `seq 1 $REPTS`; do
