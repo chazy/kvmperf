@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPTS_LIM=3
+REPTS_LIM=4
 
 source common.sh
 

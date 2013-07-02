@@ -77,13 +77,24 @@ fi
 # Environment
 IFS=$(echo -en "\n\t ")
 LOGFILE=/tmp/kvmperf.log
-OUTFILE=kvmperf.values
-_OFN=1
 
-while [[ -e $OUTFILE ]]; do
-	OUTFILE=kvmperf.values.$_OFN
-	_OFN=$(( $_OFN + 1 ))
+# Select a good results file name
+_OFN=1
+if [[ -z "$OUTFILE" ]]; then
+	echo -n "Test name?: "
+	read OUTFILE
+	if [[ -z "$OUTFILE" ]]; then
+		exit 1
+	fi
+	OUTFILE=`basename $OUTFILE .txt`.txt
+fi
+
+while [[ -e results/$OUTFILE ]]; do
+	OUTFILE=`basename $OUTFILE .txt`-$_OFN.txt
+	OUTFILE=$(( $_OFN + 1 ))
 done
+OUTFILE=results/"$OUTFILE"
+
 
 # Silent SCP command
 SSCP="scp -q"
