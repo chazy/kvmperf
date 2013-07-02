@@ -61,8 +61,10 @@ echo ""
 
 # Commands
 if [[ "$TESTARCH" == "x86" ]]; then
-	START_VM_COMMAND="virsh start guest1"
-	SHUTDOWN_VM_COMMAND="virsh -q destroy guest1"
+	#START_VM_COMMAND="virsh start guest1"
+	#SHUTDOWN_VM_COMMAND="virsh -q destroy guest1"
+	START_VM_COMMAND="/home/christoffer/bin/run-guest.sh"
+	SHUTDOWN_VM_COMMAND="pkill kvm"
 	TOOLS=tools_x86
 	VM_CONSOLE=""
 else
