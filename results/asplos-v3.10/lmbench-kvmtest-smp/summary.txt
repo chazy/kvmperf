@@ -1,0 +1,96 @@
+cd results && make summary percent 2>/dev/null | more
+make[1]: Entering directory `/home/christoffer/src/lmbench3/results'
+
+                 L M B E N C H  3 . 0   S U M M A R Y
+                 ------------------------------------
+		 (Alpha software, do not distribute)
+
+
+Processor, Processes - times in microseconds - smaller is better
+------------------------------------------------------------------------------
+Host                 OS  Mhz null null      open slct sig  sig  fork exec sh  
+                             call  I/O stat clos TCP  inst hndl proc proc proc
+--------- ------------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+ns4007581 Linux 3.10.0- 3791 0.04 0.08 0.26 0.71 1.77 0.09 0.57 155. 415. 1817
+ns4007581 Linux 3.10.0- 3791 0.04 0.07 0.25 0.72 1.77 0.09 0.59 153. 415. 1818
+ns4007581 Linux 3.10.0- 3791 0.04 0.08 0.26 0.70 1.77 0.09 0.57 153. 418. 1830
+ns4007581 Linux 3.10.0- 3791 0.04 0.08 0.26 0.70 1.94 0.09 0.56 154. 415. 1828
+ns4007581 Linux 3.10.0- 3791 0.04 0.08 0.27 0.71 1.77 0.09 0.57 153. 418. 1819
+
+Basic integer operations - times in nanoseconds - smaller is better
+-------------------------------------------------------------------
+Host                 OS  intgr intgr  intgr  intgr  intgr  
+                          bit   add    mul    div    mod   
+--------- ------------- ------ ------ ------ ------ ------ 
+ns4007581 Linux 3.10.0- 0.2600 0.0300 0.8200 5.7000 6.3800
+ns4007581 Linux 3.10.0- 0.2600 0.0300 0.8100 5.7000 6.3800
+ns4007581 Linux 3.10.0- 0.2600 0.0300 0.8200 5.7000 6.3800
+ns4007581 Linux 3.10.0- 0.2600 0.0300 0.8100 5.7000 6.3800
+ns4007581 Linux 3.10.0- 0.2600 0.0300 0.8100 5.7000 6.3800
+
+Basic float operations - times in nanoseconds - smaller is better
+-----------------------------------------------------------------
+Host                 OS  float  float  float  float
+                         add    mul    div    bogo
+--------- ------------- ------ ------ ------ ------ 
+ns4007581 Linux 3.10.0- 0.7900 1.3200 3.5800 1.8700
+ns4007581 Linux 3.10.0- 0.7900 1.3200 3.5800 1.8700
+ns4007581 Linux 3.10.0- 0.7900 1.3200 3.5800 1.8700
+ns4007581 Linux 3.10.0- 0.7900 1.3200 3.5800 1.8700
+ns4007581 Linux 3.10.0- 0.7900 1.3200 3.5800 1.8700
+
+Basic double operations - times in nanoseconds - smaller is better
+------------------------------------------------------------------
+Host                 OS  double double double double
+                         add    mul    div    bogo
+--------- ------------- ------  ------ ------ ------ 
+ns4007581 Linux 3.10.0- 0.7900 1.3200 5.4100 3.6900
+ns4007581 Linux 3.10.0- 0.7900 1.3200 5.4200 3.6900
+ns4007581 Linux 3.10.0- 0.7900 1.3200 5.4200 3.6900
+ns4007581 Linux 3.10.0- 0.7900 1.3200 5.4200 3.6900
+ns4007581 Linux 3.10.0- 0.7900 1.3200 5.4200 3.6900
+
+Context switching - times in microseconds - smaller is better
+-------------------------------------------------------------------------
+Host                 OS  2p/0K 2p/16K 2p/64K 8p/16K 8p/64K 16p/16K 16p/64K
+                         ctxsw  ctxsw  ctxsw ctxsw  ctxsw   ctxsw   ctxsw
+--------- ------------- ------ ------ ------ ------ ------ ------- -------
+ns4007581 Linux 3.10.0- 1.8900 4.7300 6.9300 5.1000 7.8700 5.29000 8.04000
+ns4007581 Linux 3.10.0- 4.1800 4.8400 7.0200 5.2300 7.9700 5.48000 8.07000
+ns4007581 Linux 3.10.0- 4.0300 4.8200 2.2000 5.1200 8.0100 5.28000 7.92000
+ns4007581 Linux 3.10.0- 3.8700 4.6600 6.7900 5.3200 8.0100 5.19000 7.98000
+ns4007581 Linux 3.10.0- 3.9500 4.6300 6.9600 5.2500 7.8900 5.22000 7.98000
+
+*Local* Communication latencies in microseconds - smaller is better
+---------------------------------------------------------------------
+Host                 OS 2p/0K  Pipe AF     UDP  RPC/   TCP  RPC/ TCP
+                        ctxsw       UNIX         UDP         TCP conn
+--------- ------------- ----- ----- ---- ----- ----- ----- ----- ----
+ns4007581 Linux 3.10.0- 1.890 8.860 6.84  18.0        21.6        17.
+ns4007581 Linux 3.10.0- 4.180 8.791 6.84  18.0        21.5        17.
+ns4007581 Linux 3.10.0- 4.030 8.858 6.76  18.0        21.6        17.
+ns4007581 Linux 3.10.0- 3.870 8.843 6.94  18.1        21.6        17.
+ns4007581 Linux 3.10.0- 3.950 8.892 6.98  18.0        21.5        17.
+
+File & VM system latencies in microseconds - smaller is better
+-------------------------------------------------------------------------------
+Host                 OS   0K File      10K File     Mmap    Prot   Page   100fd
+                        Create Delete Create Delete Latency Fault  Fault  selct
+--------- ------------- ------ ------ ------ ------ ------- ----- ------- -----
+ns4007581 Linux 3.10.0-                              4690.0 0.211 0.60900 0.727
+ns4007581 Linux 3.10.0-                              4546.0 0.207 0.61870 0.727
+ns4007581 Linux 3.10.0-                              4550.0 0.213 0.60550 0.727
+ns4007581 Linux 3.10.0-                              4810.0 0.216 0.61240 0.727
+ns4007581 Linux 3.10.0-                              5175.0 0.200 0.61330 0.727
+
+*Local* Communication bandwidths in MB/s - bigger is better
+-----------------------------------------------------------------------------
+Host                OS  Pipe AF    TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+                             UNIX      reread reread (libc) (hand) read write
+--------- ------------- ---- ---- ---- ------ ------ ------ ------ ---- -----
+ns4007581 Linux 3.10.0- 5952 12.K 2916 8628.0  14.4K 8659.9 5721.5 14.K 8776.
+ns4007581 Linux 3.10.0- 5911 12.K 2920 8626.9  14.4K 8684.3 5735.1 14.K 8782.
+ns4007581 Linux 3.10.0- 5691 12.K 2923 8584.5  14.4K 8701.0 5727.4 14.K 8667.
+ns4007581 Linux 3.10.0- 5718 12.K 2927 8614.8  14.4K 8671.4 5721.7 14.K 8791.
+ns4007581 Linux 3.10.0- 5932 12.K 2926 8607.0  14.4K 8671.1 5721.9 14.K 8782.
+make[1]: Leaving directory `/home/christoffer/src/lmbench3/results'
