@@ -91,8 +91,9 @@ fi
 
 while [[ -e results/$OUTFILE ]]; do
 	OUTFILE=`basename $OUTFILE .txt`-$_OFN.txt
-	OUTFILE=$(( $_OFN + 1 ))
+	_OFN=$(( $_OFN + 1 ))
 done
+mkdir -p results
 OUTFILE=results/"$OUTFILE"
 
 
