@@ -19,5 +19,3 @@ for i in `seq 1 $REPTS`; do
 	power_end $i
 done
 echo ""
-
-service apache2 stop
