@@ -89,12 +89,13 @@ if [[ -z "$OUTFILE" ]]; then
 	OUTFILE=`basename $OUTFILE .txt`.txt
 fi
 
-while [[ -e results/$OUTFILE ]]; do
-	OUTFILE=`basename $OUTFILE .txt`-$_OFN.txt
+_OF="$OUTFILE"
+while [[ -e results/$_OF ]]; do
+	_OF=`basename $OUTFILE .txt`-$_OFN.txt
 	_OFN=$(( $_OFN + 1 ))
 done
 mkdir -p results
-OUTFILE=results/"$OUTFILE"
+OUTFILE=results/"$_OF"
 
 
 # Silent SCP command
