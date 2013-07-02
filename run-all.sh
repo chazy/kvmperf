@@ -524,6 +524,8 @@ elif [[ $GONLY == 1 ]]; then
 	GUEST_ONLY_TESTS="$TESTS"
 fi
 
+echo "Outputting results to $OUTFILE"
+
 echo -e "\n" >> $OUTFILE
 echo -n "Performing KVM benchmarks (" >> $OUTFILE
 date | tr '\n' ')' >> $OUTFILE
