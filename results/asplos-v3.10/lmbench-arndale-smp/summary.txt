@@ -1,0 +1,107 @@
+cd results && make summary percent 2>/dev/null | more
+make[1]: Entering directory `/root/lmbench3/results'
+
+                 L M B E N C H  3 . 0   S U M M A R Y
+                 ------------------------------------
+		 (Alpha software, do not distribute)
+
+Basic system parameters
+------------------------------------------------------------------------------
+Host                 OS Description              Mhz  tlb  cache  mem   scal
+                                                     pages line   par   load
+                                                           bytes  
+--------- ------------- ----------------------- ---- ----- ----- ------ ----
+arndale   Linux 3.10.0-        armv7l-linux-gnu 1398          64           1
+arndale   Linux 3.10.0-        armv7l-linux-gnu 1398          64           1
+arndale   Linux 3.10.0-        armv7l-linux-gnu 1398          64           1
+arndale   Linux 3.10.0-        armv7l-linux-gnu 1398          64           1
+arndale   Linux 3.10.0-        armv7l-linux-gnu 1398          64           1
+
+Processor, Processes - times in microseconds - smaller is better
+------------------------------------------------------------------------------
+Host                 OS  Mhz null null      open slct sig  sig  fork exec sh  
+                             call  I/O stat clos TCP  inst hndl proc proc proc
+--------- ------------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+arndale   Linux 3.10.0- 1398 0.33 0.49 2.84 7.00 9.82 0.73 3.71 492. 1175 2750
+arndale   Linux 3.10.0- 1398 0.33 0.47 2.91 7.00 9.82 0.73 3.73 494. 1167 2724
+arndale   Linux 3.10.0- 1398 0.33 0.49 2.83 7.02 9.86 0.76 3.76 497. 1162 2739
+arndale   Linux 3.10.0- 1398 0.33 0.49 2.84 6.87 9.82 0.74 3.69 499. 1169 2733
+arndale   Linux 3.10.0- 1398 0.33 0.47 2.85 7.03 9.80 0.75 3.74 497. 1183 2729
+
+Basic integer operations - times in nanoseconds - smaller is better
+-------------------------------------------------------------------
+Host                 OS  intgr intgr  intgr  intgr  intgr  
+                          bit   add    mul    div    mod   
+--------- ------------- ------ ------ ------ ------ ------ 
+arndale   Linux 3.10.0- 0.7200 0.0800 2.2800   61.9 8.7200
+arndale   Linux 3.10.0- 0.7200 0.0800 2.2800   61.9 8.6800
+arndale   Linux 3.10.0- 0.7200 0.0800 2.2800   61.9 8.6900
+arndale   Linux 3.10.0- 0.7200 0.0800 2.2800   61.8 8.6700
+arndale   Linux 3.10.0- 0.7200 0.0800 2.2800   61.9 8.6600
+
+Basic float operations - times in nanoseconds - smaller is better
+-----------------------------------------------------------------
+Host                 OS  float  float  float  float
+                         add    mul    div    bogo
+--------- ------------- ------ ------ ------ ------ 
+arndale   Linux 3.10.0-   12.0   10.4   93.0  149.1
+arndale   Linux 3.10.0-   11.9   10.3   93.0  148.9
+arndale   Linux 3.10.0-   11.9   10.3   93.0  149.3
+arndale   Linux 3.10.0-   11.9   10.3   93.0  149.0
+arndale   Linux 3.10.0-   11.9   10.3   93.0  149.0
+
+Basic double operations - times in nanoseconds - smaller is better
+------------------------------------------------------------------
+Host                 OS  double double double double
+                         add    mul    div    bogo
+--------- ------------- ------  ------ ------ ------ 
+arndale   Linux 3.10.0-   17.9   14.6  276.2  357.9
+arndale   Linux 3.10.0-   17.9   14.6  276.3  356.5
+arndale   Linux 3.10.0-   17.9   14.6  276.2  357.9
+arndale   Linux 3.10.0-   17.9   14.6  276.3  359.8
+arndale   Linux 3.10.0-   17.9   14.6  276.4  356.5
+
+Context switching - times in microseconds - smaller is better
+-------------------------------------------------------------------------
+Host                 OS  2p/0K 2p/16K 2p/64K 8p/16K 8p/64K 16p/16K 16p/64K
+                         ctxsw  ctxsw  ctxsw ctxsw  ctxsw   ctxsw   ctxsw
+--------- ------------- ------ ------ ------ ------ ------ ------- -------
+arndale   Linux 3.10.0- 5.9600 6.9400 6.6500 8.8300 7.7100 9.24000    30.0
+arndale   Linux 3.10.0- 6.1100 6.2800 5.6700 8.2500 6.4600 8.65000    27.3
+arndale   Linux 3.10.0- 6.1400 7.6000 5.5100 8.8200 6.7600 9.30000    28.7
+arndale   Linux 3.10.0- 5.5900 6.3600 5.8600 8.3200 7.1900 8.63000    29.9
+arndale   Linux 3.10.0- 6.0900 7.5600 6.0600 9.3500 7.8700 9.56000    30.9
+
+*Local* Communication latencies in microseconds - smaller is better
+---------------------------------------------------------------------
+Host                 OS 2p/0K  Pipe AF     UDP  RPC/   TCP  RPC/ TCP
+                        ctxsw       UNIX         UDP         TCP conn
+--------- ------------- ----- ----- ---- ----- ----- ----- ----- ----
+arndale   Linux 3.10.0- 5.960  24.3 17.4  41.3        51.9        98.
+arndale   Linux 3.10.0- 6.110  24.2 17.9  41.2        51.8       165.
+arndale   Linux 3.10.0- 6.140  24.7 17.5  41.2        52.0       166.
+arndale   Linux 3.10.0- 5.590  25.1 21.4  40.7        51.7        98.
+arndale   Linux 3.10.0- 6.090  24.9 17.5  41.1        51.9       165.
+
+File & VM system latencies in microseconds - smaller is better
+-------------------------------------------------------------------------------
+Host                 OS   0K File      10K File     Mmap    Prot   Page   100fd
+                        Create Delete Create Delete Latency Fault  Fault  selct
+--------- ------------- ------ ------ ------ ------ ------- ----- ------- -----
+arndale   Linux 3.10.0-                               37.5K 0.664 3.02100 3.396
+arndale   Linux 3.10.0-                               37.4K 0.629 3.00870 3.376
+arndale   Linux 3.10.0-                               36.9K 0.583 3.01600 3.460
+arndale   Linux 3.10.0-                               37.0K 0.673 3.00940 3.411
+arndale   Linux 3.10.0-                               36.9K 0.674 3.03610 3.420
+
+*Local* Communication bandwidths in MB/s - bigger is better
+-----------------------------------------------------------------------------
+Host                OS  Pipe AF    TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+                             UNIX      reread reread (libc) (hand) read write
+--------- ------------- ---- ---- ---- ------ ------ ------ ------ ---- -----
+arndale   Linux 3.10.0- 1014 2274 925.  869.5 1914.1 2847.4 2097.8 1938 2051.
+arndale   Linux 3.10.0- 1006 2272 925.  867.9 1892.3 2848.0 2097.9 1938 2051.
+arndale   Linux 3.10.0- 983. 2266 909.  879.2 1877.6 2846.8 2098.1 1939 2051.
+arndale   Linux 3.10.0- 985. 2288 927.  876.8 1814.3 2846.7 2097.7 1938 2051.
+arndale   Linux 3.10.0- 989. 2286 897.  877.0 1862.2 2847.1 2097.9 1938 2051.
+make[1]: Leaving directory `/root/lmbench3/results'
