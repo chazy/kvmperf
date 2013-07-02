@@ -1,0 +1,95 @@
+
+                 L M B E N C H  3 . 0   S U M M A R Y
+                 ------------------------------------
+		 (Alpha software, do not distribute)
+
+Basic system parameters
+------------------------------------------------------------------------------
+Host                 OS Description              Mhz  tlb  cache  mem   scal
+                                                     pages line   par   load
+                                                           bytes  
+--------- ------------- ----------------------- ---- ----- ----- ------ ----
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+
+Processor, Processes - times in microseconds - smaller is better
+------------------------------------------------------------------------------
+Host                 OS  Mhz null null      open slct sig  sig  fork exec sh  
+                             call  I/O stat clos TCP  inst hndl proc proc proc
+--------- ------------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+chazy-air Linux 3.10.0- 2598 0.05 0.11 0.37 1.02 2.98 0.13 0.85 96.8 254. 635.
+chazy-air Linux 3.10.0- 2598 0.06 0.11 0.39 1.06 3.07 0.13 0.85 97.1 254. 635.
+chazy-air Linux 3.10.0- 2598 0.06 0.11 0.39 1.08 2.82 0.13 0.85 96.0 256. 636.
+chazy-air Linux 3.10.0- 2598 0.06 0.12 0.40 1.10 2.82 0.13 0.85 96.8 255. 639.
+
+Basic integer operations - times in nanoseconds - smaller is better
+-------------------------------------------------------------------
+Host                 OS  intgr intgr  intgr  intgr  intgr  
+                          bit   add    mul    div    mod   
+--------- ------------- ------ ------ ------ ------ ------ 
+chazy-air Linux 3.10.0- 0.3900 0.0600 1.1900 8.7000   10.0
+chazy-air Linux 3.10.0- 0.3900 0.0600 1.1900 8.7000   10.0
+chazy-air Linux 3.10.0- 0.3900 0.0600 1.1900 8.7000   10.0
+chazy-air Linux 3.10.0- 0.3900 0.0600 1.1900 8.7000   10.0
+
+Basic float operations - times in nanoseconds - smaller is better
+-----------------------------------------------------------------
+Host                 OS  float  float  float  float
+                         add    mul    div    bogo
+--------- ------------- ------ ------ ------ ------ 
+chazy-air Linux 3.10.0- 1.1600 1.9300 5.7700 5.3900
+chazy-air Linux 3.10.0- 1.1600 1.9300 5.7700 5.3900
+chazy-air Linux 3.10.0- 1.1600 1.9300 5.7700 5.3900
+chazy-air Linux 3.10.0- 1.1600 1.9300 5.7700 5.3900
+
+Basic double operations - times in nanoseconds - smaller is better
+------------------------------------------------------------------
+Host                 OS  double double double double
+                         add    mul    div    bogo
+--------- ------------- ------  ------ ------ ------ 
+chazy-air Linux 3.10.0- 1.1600 1.9300 8.8500 8.4700
+chazy-air Linux 3.10.0- 1.1600 1.9300 8.8500 8.4700
+chazy-air Linux 3.10.0- 1.1600 1.9300 8.8500 8.4700
+chazy-air Linux 3.10.0- 1.1600 1.9300 8.8500 8.4700
+
+Context switching - times in microseconds - smaller is better
+-------------------------------------------------------------------------
+Host                 OS  2p/0K 2p/16K 2p/64K 8p/16K 8p/64K 16p/16K 16p/64K
+                         ctxsw  ctxsw  ctxsw ctxsw  ctxsw   ctxsw   ctxsw
+--------- ------------- ------ ------ ------ ------ ------ ------- -------
+chazy-air Linux 3.10.0- 2.2100 2.3000 2.1800 2.6300 2.9300 2.73000 3.13000
+chazy-air Linux 3.10.0- 2.2200 2.2700 2.2600 2.6400 2.9600 2.84000 3.12000
+chazy-air Linux 3.10.0- 2.2000 2.3100 2.1600 2.6600 2.9100 2.76000 3.17000
+chazy-air Linux 3.10.0- 2.1800 2.2400 2.1800 2.5800 2.8900 2.74000 3.13000
+
+*Local* Communication latencies in microseconds - smaller is better
+---------------------------------------------------------------------
+Host                 OS 2p/0K  Pipe AF     UDP  RPC/   TCP  RPC/ TCP
+                        ctxsw       UNIX         UDP         TCP conn
+--------- ------------- ----- ----- ---- ----- ----- ----- ----- ----
+chazy-air Linux 3.10.0- 2.210 5.365 4.32  11.8        14.7        29.
+chazy-air Linux 3.10.0- 2.220 5.431 4.30  11.9        14.0        28.
+chazy-air Linux 3.10.0- 2.200 5.370 4.24  11.9        14.0        27.
+chazy-air Linux 3.10.0- 2.180 5.370 3.91  11.8        14.1        27.
+
+File & VM system latencies in microseconds - smaller is better
+-------------------------------------------------------------------------------
+Host                 OS   0K File      10K File     Mmap    Prot   Page   100fd
+                        Create Delete Create Delete Latency Fault  Fault  selct
+--------- ------------- ------ ------ ------ ------ ------- ----- ------- -----
+chazy-air Linux 3.10.0-                              3275.0 0.284 0.80670 1.215
+chazy-air Linux 3.10.0-                              3222.0 0.269 0.80180 1.214
+chazy-air Linux 3.10.0-                              3350.0 0.268 0.81270 1.213
+chazy-air Linux 3.10.0-                              3324.0 0.267 0.81040 1.213
+
+*Local* Communication bandwidths in MB/s - bigger is better
+-----------------------------------------------------------------------------
+Host                OS  Pipe AF    TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+                             UNIX      reread reread (libc) (hand) read write
+--------- ------------- ---- ---- ---- ------ ------ ------ ------ ---- -----
+chazy-air Linux 3.10.0- 3766 7288 4428 6637.1  11.7K 6527.0 4994.6 8595 7689.
+chazy-air Linux 3.10.0- 3669 7071 3116 6648.6  11.7K 6526.5 4992.3 8594 7690.
+chazy-air Linux 3.10.0- 3975 7443 4363 6622.3  11.7K 6526.7 4998.7 8594 7689.
+chazy-air Linux 3.10.0- 3913 8194 4381 6595.5  11.8K 6527.0 4991.4 8593 7659.
