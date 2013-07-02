@@ -1,0 +1,20 @@
+x86 kernel:
+===========
+
+Linus tag: v3.10: 8bb495e3f02401ee6f76d1b1d77f3ac9f079e376
+
+
+ARM kernel:
+===========
+
+git://github.com/columbia/linux-kvm-arm.git v3.10-arndale-measue
+9f4372f21e57bc98857fe0cbc8a0bbec01bd9a69 
+
+
+QEMU:
+=====
+
+git://github.com/columbia/qemu.git kvm-arm-virtio
+0bc294a604a23b9d07590eb585cafb2b67bea76d
+
+./configure --target-list=arm-softmmu --disable-sdl --enable-kvm --enable-fdt --cross-prefix=arm-linux-gnueabi-
