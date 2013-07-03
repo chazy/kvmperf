@@ -1,0 +1,96 @@
+cd results && make summary percent 2>/dev/null | more
+make[1]: Entering directory `/root/lmbench3/results'
+
+                 L M B E N C H  3 . 0   S U M M A R Y
+                 ------------------------------------
+		 (Alpha software, do not distribute)
+
+
+Processor, Processes - times in microseconds - smaller is better
+------------------------------------------------------------------------------
+Host                 OS  Mhz null null      open slct sig  sig  fork exec sh  
+                             call  I/O stat clos TCP  inst hndl proc proc proc
+--------- ------------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+guest1    Linux 3.10.0- 3788 0.04 0.06 0.21 0.53 1.86 0.10 0.57 49.0 157. 396.
+guest1    Linux 3.10.0- 3788 0.04 0.06 0.21 0.53 1.84 0.10 0.57 48.9 157. 395.
+guest1    Linux 3.10.0- 3788 0.04 0.06 0.21 0.53 1.83 0.10 0.57 49.1 158. 394.
+guest1    Linux 3.10.0- 3788 0.04 0.06 0.23 0.52 1.86 0.10 0.57 49.5 157. 396.
+guest1    Linux 3.10.0- 3788 0.04 0.06 0.21 0.52 3.25 0.10 0.57 50.8 156. 396.
+
+Basic integer operations - times in nanoseconds - smaller is better
+-------------------------------------------------------------------
+Host                 OS  intgr intgr  intgr  intgr  intgr  
+                          bit   add    mul    div    mod   
+--------- ------------- ------ ------ ------ ------ ------ 
+guest1    Linux 3.10.0- 0.2600 0.0300 0.8200 5.7100 6.3900
+guest1    Linux 3.10.0- 0.2600 0.0300 0.8200 5.7100 6.3900
+guest1    Linux 3.10.0- 0.2600 0.0300 0.8200 5.7100 6.3900
+guest1    Linux 3.10.0- 0.2600 0.0300 0.8200 5.7100 6.3900
+guest1    Linux 3.10.0- 0.2600 0.0300 0.8200 5.7100 6.3900
+
+Basic float operations - times in nanoseconds - smaller is better
+-----------------------------------------------------------------
+Host                 OS  float  float  float  float
+                         add    mul    div    bogo
+--------- ------------- ------ ------ ------ ------ 
+guest1    Linux 3.10.0- 0.7900 1.3200 3.5800 1.8500
+guest1    Linux 3.10.0- 0.7900 1.3200 3.5800 1.8600
+guest1    Linux 3.10.0- 0.7900 1.3200 3.5800 1.8600
+guest1    Linux 3.10.0- 0.7900 1.3200 3.5800 1.8600
+guest1    Linux 3.10.0- 0.7900 1.3200 3.5800 1.8500
+
+Basic double operations - times in nanoseconds - smaller is better
+------------------------------------------------------------------
+Host                 OS  double double double double
+                         add    mul    div    bogo
+--------- ------------- ------  ------ ------ ------ 
+guest1    Linux 3.10.0- 0.7900 1.3200 5.4200 3.7000
+guest1    Linux 3.10.0- 0.7900 1.3200 5.4200 3.7000
+guest1    Linux 3.10.0- 0.7900 1.3200 5.4200 3.7000
+guest1    Linux 3.10.0- 0.7900 1.3200 5.4200 3.7000
+guest1    Linux 3.10.0- 0.7900 1.3200 5.4200 3.7000
+
+Context switching - times in microseconds - smaller is better
+-------------------------------------------------------------------------
+Host                 OS  2p/0K 2p/16K 2p/64K 8p/16K 8p/64K 16p/16K 16p/64K
+                         ctxsw  ctxsw  ctxsw ctxsw  ctxsw   ctxsw   ctxsw
+--------- ------------- ------ ------ ------ ------ ------ ------- -------
+guest1    Linux 3.10.0- 0.4200 0.5500 0.5900 0.6500 0.9800 0.80000 0.99000
+guest1    Linux 3.10.0- 0.4900 0.5500 0.5900 0.6400 1.0000 0.81000 1.00000
+guest1    Linux 3.10.0- 0.4200 0.5800 0.6100 0.7100 0.9800 0.79000 0.99000
+guest1    Linux 3.10.0- 0.4700 0.5400 0.6200 0.6900 1.0200 0.80000 1.03000
+guest1    Linux 3.10.0- 0.4700 0.5900 0.6900 0.7000 1.0000 0.85000 1.03000
+
+*Local* Communication latencies in microseconds - smaller is better
+---------------------------------------------------------------------
+Host                 OS 2p/0K  Pipe AF     UDP  RPC/   TCP  RPC/ TCP
+                        ctxsw       UNIX         UDP         TCP conn
+--------- ------------- ----- ----- ---- ----- ----- ----- ----- ----
+guest1    Linux 3.10.0- 0.420 1.358 1.79 4.897       7.312        25.
+guest1    Linux 3.10.0- 0.490 1.403 1.80 4.882       7.202        26.
+guest1    Linux 3.10.0- 0.420 1.345 1.79 4.941       7.190        25.
+guest1    Linux 3.10.0- 0.470 1.340 1.78 4.947       7.298        25.
+guest1    Linux 3.10.0- 0.470 1.392 1.80 4.911       7.176        25.
+
+File & VM system latencies in microseconds - smaller is better
+-------------------------------------------------------------------------------
+Host                 OS   0K File      10K File     Mmap    Prot   Page   100fd
+                        Create Delete Create Delete Latency Fault  Fault  selct
+--------- ------------- ------ ------ ------ ------ ------- ----- ------- -----
+guest1    Linux 3.10.0-                              3002.0 0.227 0.54790 0.822
+guest1    Linux 3.10.0-                              3104.0 0.231 0.56430 0.821
+guest1    Linux 3.10.0-                              3191.0 0.230 0.56810 0.821
+guest1    Linux 3.10.0-                              3113.0 0.226 0.56910 0.820
+guest1    Linux 3.10.0-                              3026.0 0.229 0.55430 0.820
+
+*Local* Communication bandwidths in MB/s - bigger is better
+-----------------------------------------------------------------------------
+Host                OS  Pipe AF    TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+                             UNIX      reread reread (libc) (hand) read write
+--------- ------------- ---- ---- ---- ------ ------ ------ ------ ---- -----
+guest1    Linux 3.10.0- 7694 8156 5261 8392.5  14.2K 5728.1 5728.8 14.K 8746.
+guest1    Linux 3.10.0- 7531 8068 5330 8387.2  14.2K 5787.6 5737.1 14.K 8745.
+guest1    Linux 3.10.0- 7619 8168 5309 8371.4  14.1K 5768.9 5726.6 14.K 8748.
+guest1    Linux 3.10.0- 7837 8090 5287 8347.5  14.1K 5725.1 5704.7 14.K 8750.
+guest1    Linux 3.10.0- 7768 8048 5203 8389.8  14.2K 5714.6 5692.9 14.K 8649.
+make[1]: Leaving directory `/root/lmbench3/results'
