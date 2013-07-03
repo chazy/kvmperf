@@ -1,0 +1,107 @@
+cd results && make summary percent 2>/dev/null | more
+make[1]: Entering directory `/home/christoffer/src/lmbench3/results'
+
+                 L M B E N C H  3 . 0   S U M M A R Y
+                 ------------------------------------
+		 (Alpha software, do not distribute)
+
+Basic system parameters
+------------------------------------------------------------------------------
+Host                 OS Description              Mhz  tlb  cache  mem   scal
+                                                     pages line   par   load
+                                                           bytes  
+--------- ------------- ----------------------- ---- ----- ----- ------ ----
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+chazy-air Linux 3.10.0-        x86_64-linux-gnu 2598         128           1
+
+Processor, Processes - times in microseconds - smaller is better
+------------------------------------------------------------------------------
+Host                 OS  Mhz null null      open slct sig  sig  fork exec sh  
+                             call  I/O stat clos TCP  inst hndl proc proc proc
+--------- ------------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+chazy-air Linux 3.10.0- 2598 0.05 0.09 0.37 0.86 2.73 0.13 0.73 69.3 222. 575.
+chazy-air Linux 3.10.0- 2598 0.05 0.09 0.37 0.84 2.87 0.12 0.74 69.9 221. 581.
+chazy-air Linux 3.10.0- 2598 0.05 0.09 0.37 0.87 2.73 0.13 0.74 70.5 220. 574.
+chazy-air Linux 3.10.0- 2598 0.05 0.09 0.37 0.89 2.96 0.12 0.74 69.9 222. 577.
+chazy-air Linux 3.10.0- 2598 0.05 0.09 0.38 0.85 2.73 0.12 0.74 70.2 220. 574.
+
+Basic integer operations - times in nanoseconds - smaller is better
+-------------------------------------------------------------------
+Host                 OS  intgr intgr  intgr  intgr  intgr  
+                          bit   add    mul    div    mod   
+--------- ------------- ------ ------ ------ ------ ------ 
+chazy-air Linux 3.10.0- 0.3800 0.0600 1.1900 8.6900   10.0
+chazy-air Linux 3.10.0- 0.3800 0.0600 1.1900 8.6900   10.0
+chazy-air Linux 3.10.0- 0.3800 0.0600 1.1900 8.6900   10.0
+chazy-air Linux 3.10.0- 0.3800 0.0600 1.1900 8.6900   10.0
+chazy-air Linux 3.10.0- 0.3800 0.0600 1.1900 8.6900   10.0
+
+Basic float operations - times in nanoseconds - smaller is better
+-----------------------------------------------------------------
+Host                 OS  float  float  float  float
+                         add    mul    div    bogo
+--------- ------------- ------ ------ ------ ------ 
+chazy-air Linux 3.10.0- 1.1500 1.9200 5.7700 5.3900
+chazy-air Linux 3.10.0- 1.1500 1.9200 5.7700 5.3900
+chazy-air Linux 3.10.0- 1.1500 1.9200 5.7700 5.3900
+chazy-air Linux 3.10.0- 1.1500 1.9200 5.7700 5.3900
+chazy-air Linux 3.10.0- 1.1500 1.9200 5.7700 5.3900
+
+Basic double operations - times in nanoseconds - smaller is better
+------------------------------------------------------------------
+Host                 OS  double double double double
+                         add    mul    div    bogo
+--------- ------------- ------  ------ ------ ------ 
+chazy-air Linux 3.10.0- 1.1500 1.9200 8.8400 8.4700
+chazy-air Linux 3.10.0- 1.1500 1.9200 8.8400 8.4700
+chazy-air Linux 3.10.0- 1.1500 1.9200 8.8400 8.4700
+chazy-air Linux 3.10.0- 1.1500 1.9200 8.8400 8.4700
+chazy-air Linux 3.10.0- 1.1500 1.9200 8.8400 8.4700
+
+Context switching - times in microseconds - smaller is better
+-------------------------------------------------------------------------
+Host                 OS  2p/0K 2p/16K 2p/64K 8p/16K 8p/64K 16p/16K 16p/64K
+                         ctxsw  ctxsw  ctxsw ctxsw  ctxsw   ctxsw   ctxsw
+--------- ------------- ------ ------ ------ ------ ------ ------- -------
+chazy-air Linux 3.10.0- 0.6300 0.7500 0.7600 0.9500 1.4600 1.17000 1.48000
+chazy-air Linux 3.10.0- 0.6100 0.7900 0.7800 0.9100 1.4300 1.13000 1.48000
+chazy-air Linux 3.10.0- 0.6800 0.7500 0.7400 0.9700 1.3800 1.12000 1.46000
+chazy-air Linux 3.10.0- 0.6600 0.7500 0.7600 0.9200 1.4400 1.12000 1.45000
+chazy-air Linux 3.10.0- 0.6600 0.8300 0.8300 0.9900 1.4500 1.20000 1.50000
+
+*Local* Communication latencies in microseconds - smaller is better
+---------------------------------------------------------------------
+Host                 OS 2p/0K  Pipe AF     UDP  RPC/   TCP  RPC/ TCP
+                        ctxsw       UNIX         UDP         TCP conn
+--------- ------------- ----- ----- ---- ----- ----- ----- ----- ----
+chazy-air Linux 3.10.0- 0.630 2.042 2.63 7.730        10.4        39.
+chazy-air Linux 3.10.0- 0.610 2.015 2.67 7.786        10.4        39.
+chazy-air Linux 3.10.0- 0.680 1.975 2.64 7.748        10.4        38.
+chazy-air Linux 3.10.0- 0.660 2.035 2.73 7.773        10.4        38.
+chazy-air Linux 3.10.0- 0.660 2.014 2.72 7.809        10.4        38.
+
+File & VM system latencies in microseconds - smaller is better
+-------------------------------------------------------------------------------
+Host                 OS   0K File      10K File     Mmap    Prot   Page   100fd
+                        Create Delete Create Delete Latency Fault  Fault  selct
+--------- ------------- ------ ------ ------ ------ ------- ----- ------- -----
+chazy-air Linux 3.10.0-                              2220.0 0.252 0.74010 1.120
+chazy-air Linux 3.10.0-                              2155.0 0.262 0.73950 1.086
+chazy-air Linux 3.10.0-                              2226.0 0.262 0.74320 1.095
+chazy-air Linux 3.10.0-                              2187.0 0.255 0.74280 1.086
+chazy-air Linux 3.10.0-                              2201.0 0.262 0.75590 1.089
+
+*Local* Communication bandwidths in MB/s - bigger is better
+-----------------------------------------------------------------------------
+Host                OS  Pipe AF    TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+                             UNIX      reread reread (libc) (hand) read write
+--------- ------------- ---- ---- ---- ------ ------ ------ ------ ---- -----
+chazy-air Linux 3.10.0- 5212 5217 3618 6745.5  11.2K 6518.9 4971.9 8286 7642.
+chazy-air Linux 3.10.0- 5183 5232 2566 6688.1  11.1K 6518.6 4969.9 8288 7638.
+chazy-air Linux 3.10.0- 5413 5523 3648 6662.4  11.2K 6519.2 4969.1 8289 7641.
+chazy-air Linux 3.10.0- 5373 5557 3642 6707.4  11.2K 6517.9 4964.4 8291 7638.
+chazy-air Linux 3.10.0- 5365 5530 3645 6686.6  11.1K 6518.9 4962.8 8288 7639.
+make[1]: Leaving directory `/home/christoffer/src/lmbench3/results'
