@@ -1,0 +1,13 @@
+
+
+Performing KVM benchmarks (Tue Jul  2 22:27:10 EDT 2013)
+ hackbench (localhost)	13.22	13.37	13.34	13.16	13.66	
+ untar (localhost)	9.81	9.85	9.85	9.85	9.85	
+ curl1k (localhost)	8.22	8.21	8.18	8.21	8.23	
+ curl1g (localhost)	92.05	91.99	92.00	92.06	92.08	
+ apache (localhost)	9910.52	9927.00	10003.49	9628.20	9916.89	
+ mysql (localhost)	13.7127	13.8385	13.6481	13.5860	13.6123	
+ dd_rw (localhost)	5.94	6.11	6.04	6.11	6.04	
+ kernel_compile (localhost)	238.94	236.95	236.05	236.09	
+ memcached (localhost)	23.93	23.73	24.17	23.65	24.19	
+ ws_x86 (localhost)	1578	1564	1570	1512	1506	
