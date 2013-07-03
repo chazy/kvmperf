@@ -1,0 +1,107 @@
+cd results && make summary percent 2>/dev/null | more
+make[1]: Entering directory `/root/lmbench3/results'
+
+                 L M B E N C H  3 . 0   S U M M A R Y
+                 ------------------------------------
+		 (Alpha software, do not distribute)
+
+Basic system parameters
+------------------------------------------------------------------------------
+Host                 OS Description              Mhz  tlb  cache  mem   scal
+                                                     pages line   par   load
+                                                           bytes  
+--------- ------------- ----------------------- ---- ----- ----- ------ ----
+christoff Linux 3.10.0-        x86_64-linux-gnu              128           1
+christoff Linux 3.10.0-        x86_64-linux-gnu              128           1
+christoff Linux 3.10.0-        x86_64-linux-gnu              128           1
+christoff Linux 3.10.0-        x86_64-linux-gnu              128           1
+christoff Linux 3.10.0-        x86_64-linux-gnu              128           1
+
+Processor, Processes - times in microseconds - smaller is better
+------------------------------------------------------------------------------
+Host                 OS  Mhz null null      open slct sig  sig  fork exec sh  
+                             call  I/O stat clos TCP  inst hndl proc proc proc
+--------- ------------- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ----
+christoff Linux 3.10.0-   -1 0.05 0.09 0.33 0.81 2.99 0.13 0.81 77.4 245. 621.
+christoff Linux 3.10.0-   -1 0.05 0.10 0.32 0.80 2.76 0.13 0.82 76.9 246. 622.
+christoff Linux 3.10.0-   -1 0.05 0.09 0.32 0.79 2.76 0.13 0.82 76.0 245. 623.
+christoff Linux 3.10.0-   -1 0.05 0.09 0.32 0.78 2.77 0.13 0.83 75.5 244. 620.
+christoff Linux 3.10.0-   -1 0.05 0.09 0.33 0.80 2.76 0.13 0.82 75.7 245. 622.
+
+Basic integer operations - times in nanoseconds - smaller is better
+-------------------------------------------------------------------
+Host                 OS  intgr intgr  intgr  intgr  intgr  
+                          bit   add    mul    div    mod   
+--------- ------------- ------ ------ ------ ------ ------ 
+christoff Linux 3.10.0- 0.3900 0.0600 1.2000 8.7500   10.1
+christoff Linux 3.10.0- 0.3900 0.0600 1.1900 8.7400   10.1
+christoff Linux 3.10.0- 0.3900 0.0600 1.2000 8.7500   10.1
+christoff Linux 3.10.0- 0.3900 0.0600 1.2000 8.7500   10.1
+christoff Linux 3.10.0- 0.3900 0.0600 1.2000 8.7400   10.1
+
+Basic float operations - times in nanoseconds - smaller is better
+-----------------------------------------------------------------
+Host                 OS  float  float  float  float
+                         add    mul    div    bogo
+--------- ------------- ------ ------ ------ ------ 
+christoff Linux 3.10.0- 1.1600 1.9400 5.8100 5.5400
+christoff Linux 3.10.0- 1.1600 1.9400 5.8100 5.5300
+christoff Linux 3.10.0- 1.1600 1.9400 5.8100 5.5400
+christoff Linux 3.10.0- 1.1600 1.9400 5.8100 5.5400
+christoff Linux 3.10.0- 1.1600 1.9400 5.8000 5.5400
+
+Basic double operations - times in nanoseconds - smaller is better
+------------------------------------------------------------------
+Host                 OS  double double double double
+                         add    mul    div    bogo
+--------- ------------- ------  ------ ------ ------ 
+christoff Linux 3.10.0- 1.1600 1.9400 8.9000 8.5300
+christoff Linux 3.10.0- 1.1600 1.9400 8.8900 8.5300
+christoff Linux 3.10.0- 1.1600 1.9400 8.8900 8.5300
+christoff Linux 3.10.0- 1.1600 1.9400 8.9000 8.5300
+christoff Linux 3.10.0- 1.1600 1.9400 8.9000 8.5300
+
+Context switching - times in microseconds - smaller is better
+-------------------------------------------------------------------------
+Host                 OS  2p/0K 2p/16K 2p/64K 8p/16K 8p/64K 16p/16K 16p/64K
+                         ctxsw  ctxsw  ctxsw ctxsw  ctxsw   ctxsw   ctxsw
+--------- ------------- ------ ------ ------ ------ ------ ------- -------
+christoff Linux 3.10.0- 0.8300 0.9400 1.0800 1.1400 1.7100 1.33000 1.74000
+christoff Linux 3.10.0- 0.7700 0.9600 1.1000 1.1200 1.7000 1.33000 1.77000
+christoff Linux 3.10.0- 0.7600 0.9400 1.0400 1.1100 1.7600 1.38000 1.76000
+christoff Linux 3.10.0- 0.7700 0.9500 1.0500 1.1800 1.7100 1.38000 1.79000
+christoff Linux 3.10.0- 0.7600 0.9400 1.0700 1.1300 1.7600 1.38000 1.77000
+
+*Local* Communication latencies in microseconds - smaller is better
+---------------------------------------------------------------------
+Host                 OS 2p/0K  Pipe AF     UDP  RPC/   TCP  RPC/ TCP
+                        ctxsw       UNIX         UDP         TCP conn
+--------- ------------- ----- ----- ---- ----- ----- ----- ----- ----
+christoff Linux 3.10.0- 0.830 2.334 3.28 8.035        11.2        39.
+christoff Linux 3.10.0- 0.770 2.224 3.20 8.081        11.1        39.
+christoff Linux 3.10.0- 0.760 2.220 3.15 8.064        10.6        39.
+christoff Linux 3.10.0- 0.770 2.224 3.36 7.997        10.7        38.
+christoff Linux 3.10.0- 0.760 2.215 3.14 8.022        10.7        38.
+
+File & VM system latencies in microseconds - smaller is better
+-------------------------------------------------------------------------------
+Host                 OS   0K File      10K File     Mmap    Prot   Page   100fd
+                        Create Delete Create Delete Latency Fault  Fault  selct
+--------- ------------- ------ ------ ------ ------ ------- ----- ------- -----
+christoff Linux 3.10.0-                              4702.0 0.328 0.79130 1.093
+christoff Linux 3.10.0-                              4856.0 0.293 0.80770 1.108
+christoff Linux 3.10.0-                              4688.0 0.295 0.81030 1.096
+christoff Linux 3.10.0-                              4724.0 0.339 0.77790 1.135
+christoff Linux 3.10.0-                              4755.0 0.296 0.80470 1.136
+
+*Local* Communication bandwidths in MB/s - bigger is better
+-----------------------------------------------------------------------------
+Host                OS  Pipe AF    TCP  File   Mmap  Bcopy  Bcopy  Mem   Mem
+                             UNIX      reread reread (libc) (hand) read write
+--------- ------------- ---- ---- ---- ------ ------ ------ ------ ---- -----
+christoff Linux 3.10.0- 5050 5237 3486 6429.6  10.4K 4813.6 4730.5 7856 7252.
+christoff Linux 3.10.0- 5103 5327 3552 6489.9  10.6K 4904.9 4798.2 7963 7367.
+christoff Linux 3.10.0- 5153 5359 3562 6388.1  10.5K 4883.4 4816.6 7958 7442.
+christoff Linux 3.10.0- 5211 5351 3575 6371.4  10.5K 4896.9 4812.0 7956 7357.
+christoff Linux 3.10.0- 5119 5276 3547 6496.8  10.5K 4888.4 4815.0 7957 7434.
+make[1]: Leaving directory `/root/lmbench3/results'
