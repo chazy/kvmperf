@@ -1,0 +1,12 @@
+
+
+Performing KVM benchmarks (Thu Jul  4 18:31:00 PDT 2013)
+ hackbench (guest1)	72.61	81.09	84.68	78.05	78.10	
+ untar (guest1)	64.40	63.79	61.47	64.04	62.00	
+ curl1k (guest1)	23.13	22.94	22.98	22.73	22.70	
+ curl1g (guest1)	91.33	91.31	91.29	91.29	91.27	
+ apache (guest1)	1040.77	1047.91	1041.73	1045.56	1046.73	
+ mysql (guest1)	255.0389	252.8630	247.3369	250.7587	246.1292	
+ dd_rw (guest1)	8.42	8.15	9.20	8.88	9.25	
+ kernel_compile (guest1)	707.27	695.06	694.05	694.08	
+ memcached (guest1)	209.59	207.11	203.35	213.10	213.51	
