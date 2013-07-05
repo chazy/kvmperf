@@ -61,3 +61,13 @@ Laptop Notes
     3. service avahi-daemon stop
 8. sudo bash -c 'for i in `seq 0 1`; do cpufreq-set -c $i -g performance; done;' 
 9. ./run-all.sh --guest-only
+
+
+3.10 Measurement Notes
+----------------------
+Arndale host source:
+git://github.com/columbia/linux-kvm-arm.git v3.10-arndale-measue
+5cf2e8efe14e8aba05432e02edce59c252e3500c
+
+git://github.com/columbia/linux-kvm-arm.git v3.10-vexpress-measure
+94af25f43d7864caa3cda269ea63885c984395a6
