@@ -1,0 +1,36 @@
+Arndale with vgic:
+------------------
+
+hvc	5681	5636	5697	5639	5637
+noop_guest	52	52	52	52	52
+mmio_read_user	10920	10923	10923	10890	10684
+mmio_read_vgic	6829	6839	7006	6829	6838
+ipi	14237	14348	14257	14353	14231
+eoi	238	238	238	238	283
+
+average:
+hvc	5658
+noop_guest	52
+mmio_read_user	10868
+mmio_read_vgic	6868
+ipi	14285
+eoi	247
+
+
+
+Arndale without vgic:
+---------------------
+hvc	2445	2450	2433	2452	2434	2435	2460
+noop_guest	8	8	8	8	8	8	8
+mmio_read_user	6880	7008	7020	7219	7016	7030	6986
+mmio_read_vgic	7243	7391	7196	7400	7383	7300	7234
+ipi	75021	225988	565957	469077	203057	379191	147751
+eoi	20115	7212	55260	7274	8632	7223	19283
+
+average:
+hvc		2138
+noop_guest	7
+mmio_read_user	6144
+mmio_read_vgic	6393
+ipi	258255
+eoi	15624

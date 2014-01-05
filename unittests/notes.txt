@@ -1,0 +1,23 @@
+Kernel Source:
+--------------
+3.10 for Arndale:
+git@github.com:columbia/linux-kvm-arm.git
+branch: v3.10-arndale-measure-unit-tests
+commit: 35620d87e4212a806f7c5c8527bb91c68531517f
+
+QEMU Source:
+------------
+qemu-master + virtio-testdev:
+git@github.com:columbia/qemu.git
+branch: virtio-testdev
+commit: 1e1010db5360ef2a170eaf3b06f9f21259ecec6b
+
+KVM Unit Tests:
+---------------
+git@github.com:columbia/kvm-unit-tests.git
+branch: arm-support
+commit: 982bface26413e379d7de37d8f5957e5c0eb161a
+
+Command to run tests:
+---------------------
+./qemu-system-arm -device virtio-testdev -display none -serial stdio -M virt -cpu cortex-a15 -kernel vmexit.flat -smp 2 -m 256 -enable-kvm
