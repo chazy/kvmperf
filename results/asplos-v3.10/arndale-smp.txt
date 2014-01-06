@@ -1,13 +1,22 @@
 
 
-Performing KVM benchmarks (Mon Jul  1 19:30:56 PDT 2013)
- hackbench (arndale)	66.42	66.22	66.31	
- untar (arndale)	58.39	58.97	57.24	
- curl1k (arndale)	21.88	21.87	21.90	
- curl1g (arndale)	91.27	91.26	91.26	
- apache (arndale)	1730.87	1714.25	1739.93	
- mysql (arndale)	199.3372	199.5587	199.0983	
- dd_rw (arndale)	10.00	10.04	9.96	
- kernel_compile (arndale)	680.56	671.11	670.84	
- memcached (arndale)	151.46	154.53	151.15	146.18	
- ws_arm (arndale)	3641	3640	3418	3277	3418	
+Performing KVM benchmarks (Wed Jul 10 00:10:13 IST 2013)
+ hackbench (arndale)	65.05	64.94	64.85	65.17	
+ hackbench (guest1)	68.50	68.44	69.20	69.37	
+ untar (arndale)	69.46	67.58	69.36	68.75	
+ untar (guest1)	77.63	80.00	80.37	77.65	
+ curl1k (arndale)	22.28	22.27	22.25	22.23	
+ curl1k (guest1)	24.46	24.42	24.49	24.48	
+ curl1g (arndale)	91.32	91.27	91.28	91.27	
+ curl1g (guest1)	105.65	101.34	93.74	101.26	
+ apache (arndale)	1694.18	1724.40	1724.58	1720.90	
+ apache (guest1)	1571.04	1582.39	1595.39	1572.37	
+ mysql (arndale)	199.5204	199.8935	199.9721	199.9413	
+ mysql (guest1)	221.2585	215.8241	217.6948	215.6717	
+ dd_rw (arndale)	10.08	9.97	10.02	10.05	
+ dd_rw (guest1)	9.48	10.59	11.08	11.21	
+ kernel_compile (arndale)	684.21	675.30	674.45	674.37	
+ kernel_compile (guest1)	708.33	693.37	692.11	692.19	
+ memcached (arndale)	148.91	154.96	149.62	152.71	
+ memcached (guest1)	159.99	163.32	166.40	163.25	
+ ws_arm (arndale)	3642	3362	3363	3464	

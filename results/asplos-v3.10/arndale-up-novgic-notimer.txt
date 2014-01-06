@@ -1,0 +1,22 @@
+
+
+Performing KVM benchmarks (Mon Jul 15 11:03:39 IST 2013)
+ hackbench (arndale)	86.83	86.87	87.04	86.94	
+ hackbench (guest1)	93.24	91.93	92.07	92.00	
+ untar (arndale)	61.81	59.99	59.94	60.00	
+ untar (guest1)	66.75	68.61	66.36	66.32	
+ curl1k (arndale)	19.36	19.32	19.31	19.32	
+ curl1k (guest1)	21.81	21.73	21.73	21.72	
+ curl1g (arndale)	91.31	91.27	91.27	91.27	
+ curl1g (guest1)	91.73	91.66	91.67	91.66	
+ apache (arndale)	1737.95	1731.18	1742.60	1728.84	
+ apache (guest1)	886.38	897.73	897.10	898.11	
+ mysql (arndale)	184.8435	184.7049	184.6072	184.7493	
+ mysql (guest1)	217.7342	216.8659	216.8055	216.2824	
+ dd_rw (arndale)	9.68	9.81	9.83	9.87	
+ dd_rw (guest1)	8.47	10.19	10.77	10.82	
+ kernel_compile (arndale)	1156.82	1145.61	1145.94	1145.48	
+ kernel_compile (guest1)	1202.02	1186.42	1186.24	1186.46	
+ memcached (arndale)	128.63	128.68	128.36	128.77	
+ memcached (guest1)	212.16	214.74	211.65	211.84	
+ ws_arm (arndale)	3276	3276	3300	3275	
