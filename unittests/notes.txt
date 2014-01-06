@@ -16,7 +16,7 @@ KVM Unit Tests:
 ---------------
 git@github.com:columbia/kvm-unit-tests.git
 branch: arm-support
-commit: 982bface26413e379d7de37d8f5957e5c0eb161a
+commit: 351eeadbe9e263b59ea4917f02f60cc5fea97e1a
 
 Command to run tests:
 ---------------------
