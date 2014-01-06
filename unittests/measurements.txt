@@ -36,24 +36,24 @@ mmio_read_vgic	6393
 ipi	258255
 eoi	15624
 
-
-mmio_kernel	7361	7389	7088	7253	7324	7084	7259	7324	6964	6991	7030
-average:	7234
+mmio_kernel	3040	3041	3040	3040	3047	3040	3040
+average:	3041
 
 Measuring kernel mmio when not using vgic/timers requires a hack, because
 we don't have any default in-kernel mmio handling code to measure against.
 
 Therefore apply these patches to the kernel and the unit-tests tool, respectively:
 
+
 diff --git a/arch/arm/kvm/mmio.c b/arch/arm/kvm/mmio.c
-index 72a12f2..86798be 100644
+index 72a12f2..9fca44b 100644
 --- a/arch/arm/kvm/mmio.c
 +++ b/arch/arm/kvm/mmio.c
 @@ -138,6 +138,9 @@ int io_mem_abort(struct kvm_vcpu *vcpu, struct kvm_run *run,
  	if (mmio.is_write)
  		memcpy(mmio.data, vcpu_reg(vcpu, rt), mmio.len);
  
-+	if (fault_ipa == 0xeeeee000)
++	if (kvm_vcpu_get_hfar(vcpu) == 0xc0000000)
 +		return 1;
 +
  	if (vgic_handle_mmio(vcpu, run, &mmio))
@@ -75,7 +75,7 @@ index d67aae6..7bd5e5f 100644
 +	unsigned long c1, c2;
 +
 +	c1 = read_cc();
-+	val = readl(0xeeeee000);
++	val = readl(0xc0000000);
 +	c2 = read_cc();
 +	return CYCLE_COUNT(c1, c2);
 +}
