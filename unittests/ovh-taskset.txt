@@ -1,0 +1,42 @@
+mov_to_cr8	18	18	18	18	18	18	18
+portio-no-eventfd:pci-io	9351	9342	9234	9388	9396	9386	9215
+mmio-no-eventfd:pci-mem	11943	11881	11931	11906	11877	11912	11832
+mmio-datamatch-eventfd:pci-mem	3767	3772	3798	3794	3809	3797	3811
+portio-wildcard-eventfd:pci-io	1966	1964	1962	1957	1951	1957	1961
+inl_from_kernel	3285	3299	3274	3301	3315	3299	3297
+ipi	18743	19198	19004	18688	18751	18798	18820
+wr_tsc_adjust_msr	1761	1739	1759	1743	1761	1754	1750
+vmcall	1652	1654	1659	1655	1662	1655	1653
+mmio-wildcard-eventfd:pci-mem	3762	3773	3787	3804	3783	3784	3834
+mov_from_cr8	11	11	11	11	11	11	11
+outl_to_kernel	2021	2054	2035	2111	2021	2048	2024
+ple-round-robin	407	392	396	406	397	402	397
+inl_from_pmtimer	13032	12966	13096	13053	11244	13107	12935
+cpuid	1786	1769	1792	1783	1793	1800	1774
+ipi+halt	20747	20891	20942	20902	20806	20823	20890
+rd_tsc_adjust_msr	1733	1721	1721	1725	1722	1730	1711
+inl_from_qemu	12320	12216	12082	12209	10672	12227	12163
+portio-datamatch-eventfd:pci-io	1970	1972	1968	1963	1958	1959	1952
+eoi	2401	2311	2314	2483	2308	2281	2461
+
+Average:
+mov_to_cr8	18
+portio-no-eventfd:pci-io	9330
+mmio-no-eventfd:pci-mem	11897
+mmio-datamatch-eventfd:pci-mem	3792
+portio-wildcard-eventfd:pci-io	1959
+inl_from_kernel	3295
+ipi	18857
+wr_tsc_adjust_msr	1752
+vmcall	1655
+mmio-wildcard-eventfd:pci-mem	3789
+mov_from_cr8	11
+outl_to_kernel	2044
+ple-round-robin	399
+inl_from_pmtimer	12776
+cpuid	1785
+ipi+halt	20857
+rd_tsc_adjust_msr	1723
+inl_from_qemu	11984
+portio-datamatch-eventfd:pci-io	1963
+eoi	2365
