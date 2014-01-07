@@ -21,3 +21,13 @@ commit: 351eeadbe9e263b59ea4917f02f60cc5fea97e1a
 Command to run tests:
 ---------------------
 ./qemu-system-arm -device virtio-testdev -display none -serial stdio -M virt -cpu cortex-a15 -kernel vmexit.flat -smp 2 -m 256 -enable-kvm
+
+Results log:
+------------
+The results are logged in files named according to what they measure:
+ - air*: Macbook Air Measurements
+ - ovh*: OVH Server Measurements
+ - arndale*: Arndale Measurements
+
+The -taskset versions of the x86 platforms are limited to 2 CPUs using taskset
+to provide a more fair comparison to the dual-core Arndale system.
