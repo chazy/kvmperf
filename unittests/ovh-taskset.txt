@@ -17,6 +17,7 @@ ipi+halt	20747	20891	20942	20902	20806	20823	20890
 rd_tsc_adjust_msr	1733	1721	1721	1725	1722	1730	1711
 inl_from_qemu	12320	12216	12082	12209	10672	12227	12163
 portio-datamatch-eventfd:pci-io	1970	1972	1968	1963	1958	1959	1952
+eoi	2401	2311	2314	2483	2308	2281	2461
 
 Average:
 mov_to_cr8	18
@@ -38,3 +39,4 @@ ipi+halt	20857
 rd_tsc_adjust_msr	1723
 inl_from_qemu	11984
 portio-datamatch-eventfd:pci-io	1963
+eoi	2365
