@@ -18,9 +18,10 @@ git@github.com:columbia/kvm-unit-tests.git
 branch: arm-support
 commit: 351eeadbe9e263b59ea4917f02f60cc5fea97e1a
 
-Command to run tests:
----------------------
+Commands to run tests:
+----------------------
 ./qemu-system-arm -device virtio-testdev -display none -serial stdio -M virt -cpu cortex-a15 -kernel vmexit.flat -smp 2 -m 256 -enable-kvm
+sudo taskset 0x3 ~/src/qemu-arm/x86_64-softmmu/qemu-system-x86_64 -enable-kvm -device pc-testdev -device isa-debug-exit,iobase=0xf4,iosize=0x4 -display none -serial stdio -device pci-testdev -kernel ~/src/kvm-unit-tests/x86/vmexit.flat -smp 2 -append ipi
 
 Results log:
 ------------
