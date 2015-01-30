@@ -62,6 +62,8 @@ function start_guest()
 	GUEST_ALIVE=1
 	sleep 1
 	echo "Starting guest with command: $START_VM_COMMAND" | tee -a $LOGFILE
+	ssh -f root@$HOST 2>&1 >>$LOGFILE "sync; echo 3 > /proc/sys/vm/drop_caches"
+	sleep 5
 	ssh -f root@$HOST 2>&1 >>$LOGFILE "$START_VM_COMMAND"
 	if [[ ! $? == 0 ]]; then
 		echo "Error starting guest - check logfile!" >&2
