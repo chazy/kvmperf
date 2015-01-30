@@ -70,7 +70,7 @@ if [[ "$TESTARCH" == "x86" ]]; then
 else
 	TESTARCH="arm"
 	VM_CONSOLE=/tmp/ubuntu.console
-	START_VM_COMMAND="cd /root && ./run-ubuntu.sh --console $VM_CONSOLE -m 1536"
+	START_VM_COMMAND="cd /root && ./run-guest.sh --serial $VM_CONSOLE -m 1536"
 	SHUTDOWN_VM_COMMAND="pkill -9 qemu-system-arm"
 	TOOLS=tools
 fi
