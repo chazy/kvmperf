@@ -4,7 +4,7 @@ source common.sh
 
 URL="http://$WEBHOST/large"
 
-rm $TIMELOG
+rm -f $TIMELOG
 
 for i in `seq 1 $REPTS`; do
 	echo -n "."

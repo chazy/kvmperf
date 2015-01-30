@@ -8,14 +8,20 @@ source common.sh
 #mount -t ramfs none ram
 #pushd ram
 
+apt-get -y build-dep linux-generic
+apt-get -y install gcc-4.6
+mkdir -p ~/bin
+ln -s /usr/bin/gcc-4.6 ~/bin/gcc
+export PATH=~/bin:$PATH
+
 wget "http://$WEBHOST/$KERNEL_TAR"
 if [[ ! $? == 0 ]]; then
 	exit 1
 fi
 echo "Downloaded kernel..."
 tar xjf $KERNEL_TAR
-sleep 5
 echo "Kernel image extracted..."
+mkdir $KERNEL
 pushd $KERNEL
 
 make vexpress_defconfig
