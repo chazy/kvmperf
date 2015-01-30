@@ -132,7 +132,7 @@ function common_test()
 	set_remote_dir "$remote_dir"
 
 	# Create remote directory, upload common scripts and tools
-	echo "Uploading common scripts and tools" | tee -a $LOGFILE
+	echo "Uploading common scripts and tools to $remote_dir" | tee -a $LOGFILE
 	ssh root@$remote "mkdir $remote_dir"
 	$SCP ".localconf" root@$remote:$remote_dir/.
 	$SCP "tests/common.sh" root@$remote:$remote_dir/.
