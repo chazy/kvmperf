@@ -8,7 +8,7 @@ NR_REQUESTS=100000
 ab=/usr/bin/ab
 CMD="$ab -n $NR_REQUESTS -c 100 http://localhost/gcc/index.html"
 
-service apache2 start
+sudo service apache2 start
 
 rm -f time.txt
 touch time.txt
