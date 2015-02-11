@@ -12,9 +12,10 @@ function apache_test()
 	ssh $USER@$remote "sudo cat > /tmp/i.sh && sudo chmod a+x /tmp/i.sh && sudo /tmp/i.sh" < tests/apache_install.sh | \
 		tee -a $LOGFILE
 
-	$SCP tools/gcc-html.tar.gz root@$remote:/var/www/.
-	ssh root@$remote "cd /var/www; tar xzf gcc-html.tar.gz" | tee -a $LOGFILE
-	ssh root@$remote "service apache2 start" | tee -a $LOGFILE
+	$SCP tools/gcc-html.tar.gz $USER@$remote:~/
+	ssh $USER@$remote "sudo cp ~/gcc-html.tar.gz /var/www/" | tee -a $LOGFILE
+	ssh $USER@$remote "cd /var/www; sudo tar xzf gcc-html.tar.gz" | tee -a $LOGFILE
+	ssh $USER@$remote "sudo service apache2 start" | tee -a $LOGFILE
 	APACHE_STARTED="$remote"
 
 	rm -f /tmp/power.values.*
