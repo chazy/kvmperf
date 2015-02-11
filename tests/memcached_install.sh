@@ -10,7 +10,7 @@ which memslap > /dev/null 2>&1
 if [[ ! $? == 0 ]]; then
 	apt-get install -y g++
 
-	MEMCACHED=libmemcached-dev
+	MEMCACHED=libmemcached-1.0.15
 	cd /tmp/
 	tar xvzf $MEMCACHED.tar.gz
 
@@ -18,6 +18,7 @@ if [[ ! $? == 0 ]]; then
 	./configure
 	make
 	make install
+	sudo ldconfig
 	popd
 fi
 
