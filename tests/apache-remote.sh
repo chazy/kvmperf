@@ -9,7 +9,7 @@ function apache_test()
 	NR_REQUESTS=100000
 
 	# Make sure apache is installed and disabled
-	ssh root@$remote "cat > /tmp/i.sh && chmod a+x /tmp/i.sh && /tmp/i.sh" < tests/apache_install.sh | \
+	ssh $USER@$remote "sudo cat > /tmp/i.sh && sudo chmod a+x /tmp/i.sh && sudo /tmp/i.sh" < tests/apache_install.sh | \
 		tee -a $LOGFILE
 
 	$SCP tools/gcc-html.tar.gz root@$remote:/var/www/.
@@ -51,7 +51,7 @@ function apache_test()
 		echo "" >> $OUTFILE
 	fi
 
-	ssh root@$remote "service apache2 stop" | tee -a $LOGFILE
+	ssh $USER@$remote "sudo service apache2 stop" | tee -a $LOGFILE
 	APACHE_STARTED=""
 }
 
