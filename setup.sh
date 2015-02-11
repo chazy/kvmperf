@@ -8,6 +8,7 @@ else
 	GUEST1="guest1"
 	WEBHOST="webserver"
 	POWERHOST="powerhost"
+	USER="root"
 	REPTS="10"
 
 	echo -n "What's the architecture? [$TESTARCH]:"
@@ -49,12 +50,19 @@ else
 		REPTS="$_REPTS"
 	fi
 
+	echo -n "Username? [$USER]:"
+	read _USER
+	if [[ -n "$_USER" ]]; then
+		USER="$_USER"
+	fi
+
 	echo "TESTARCH=\"$TESTARCH\"" > .localconf
 	echo "HOST=\"$HOST\"" >> .localconf
 	echo "GUEST1=\"$GUEST1\"" >> .localconf
 	echo "WEBHOST=\"$WEBHOST\"" >> .localconf
 	echo "POWERHOST=\"$POWERHOST\"" >> .localconf
 	echo "REPTS=\"$REPTS\"" >> .localconf
+	echo "USER=\"$USER\"" >> .localconf
 fi
 
 echo ""
