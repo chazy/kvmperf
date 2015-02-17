@@ -138,6 +138,13 @@ function common_test()
 	$SCP "tests/common.sh" $USER@$remote:$remote_dir/.
 	$SCP "tests/power.sh" $USER@$remote:$remote_dir/.
 	$SCP "tests/$cmdname" $USER@$remote:$remote_dir/.
+  if [ "$uut" = "hackbench" ]; then
+    $SCP "tools/hackbench.c" $USER@$remote:$remote_dir/.
+    $SSH -t $USER@$remote "gcc -o hackbench hackbench.c -lpthread;sudo cp hackbench $remote_dir" 2>&1 | tee -a $LOGFILE
+	  if [[ $? == 255 ]]; then
+		  early_exit
+	  fi
+  fi
 	while [[ -n $1 ]]; do
 		file=`basename $1`
 		scp -q "$TOOLS/$file" $USER@$remote:$remote_dir/.
