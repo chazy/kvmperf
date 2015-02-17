@@ -163,7 +163,7 @@ function common_test()
 	remote_cmd=""\
 "chmod a+x $remote_dir/$cmdname && "\
 "cd $remote_dir && "\
-"taskset -c 0,1 sudo ./$cmdname"
+"sudo ./$cmdname"
 	$SSH -t $USER@$remote "$remote_cmd" 2>&1 | tee -a $LOGFILE
 	if [[ $? == 255 ]]; then
 		early_exit
