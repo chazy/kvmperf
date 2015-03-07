@@ -339,12 +339,13 @@ function ws_x86_test()
 
 source tests/apache-remote.sh
 source tests/mysql.sh
+source tests/mysql_remote.sh
 
 ##########################################################################
 # Test Harness
 #
 
-TESTS="hackbench untar curl1k curl1g apache mysql dd_rw kernel_compile memcached ws_arm ws_x86"
+TESTS="hackbench untar curl1k curl1g apache mysql dd_rw kernel_compile memcached ws_arm ws_x86 mysql_remote"
 GUEST_ONLY_TESTS=""
 HOST_ONLY_TESTS="ws_arm ws_x86"
 ARM_ONLY_TESTS="ws_arm"
