@@ -24,10 +24,10 @@ function apache_test()
 	rm -f /tmp/time.txt
 	touch /tmp/time.txt
 	for i in `seq 1 $REPTS`; do
-		power_start $i
+	#	power_start $i
 		$ab -n $NR_REQUESTS -c 100 http://$remote/gcc/index.html | \
 			tee >(grep 'Requests per second' | awk '{ print $4 }' >> /tmp/time.txt)
-		power_end $i
+	#	power_end $i
 	done;
 
 	# Get time stats
