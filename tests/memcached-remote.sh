@@ -6,7 +6,7 @@ function memcached_test()
 
 	MEMCACHED=libmemcached-1.0.15
 	MEMCACHED_CONF=memcached.conf
-	TIMELOG=memcached.txt
+	TIMELOG=$OUTFILE
 	TIME="/usr/bin/time --format=%e -o $TIMELOG --append"
 	
 	cp tools/$MEMCACHED.tar.gz /tmp
@@ -36,8 +36,7 @@ function memcached_test()
 	#tr '\n' '\t' < $TIMELOG
 
 	# Output in nice format as well
-	#echo -en " $uut (${remote})\t" >> $TIMELOG
-	#cat $TIMELOG | tr '\n' '\t' | tr '\r' ' ' >> $TIMELOG
+	echo -en " $uut (${remote})\t" >> $TIMELOG
 	echo "" >> $TIMELOG
 
 }
