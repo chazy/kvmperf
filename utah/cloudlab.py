@@ -51,7 +51,7 @@ lan.addInterface(iface)
 # IP will be 10.10.1.4
 node = RSpec.RawPC("bm-node")
 node.hardware_type = "m400"
-node.disk_image = kvm_disk_image
+node.disk_image = bm_disk_image
 rspec.addResource(node)
 iface = node.addInterface("eth1")
 lan.addInterface(iface)
