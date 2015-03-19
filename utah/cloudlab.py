@@ -28,13 +28,13 @@ rspec.addResource(lan)
 
 # Parse parameter results
 client = True
-if params.config = "both":
+if params.config == "both":
     xen = True
     kvm = True
-elif params.config = "xen":
+elif params.config == "xen":
     xen = True
     kvm = False
-elif params.config = "kvm":
+elif params.config == "kvm":
     xen = False
     kvm = True
 else:
