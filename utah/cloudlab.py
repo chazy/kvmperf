@@ -12,7 +12,7 @@ rspec = RSpec.Request()
 # kvmarm-3.18-measure disk image URL
 kvm_disk_image = "https://www.utah.cloudlab.us/image_metadata.php?uuid=984d5c44-ce43-11e4-bc0b-020cbce70073"
 # kvmarm-3.18-xen-measure disk image URL
-xen_disk_image = "https://www.utah.cloudlab.us/image_metadata.php?uuid=2221ca56-ce29-11e4-bc0b-020cbce70073"
+xen_disk_image = "https://www.utah.cloudlab.us/image_metadata.php?uuid=6b848a4c-ce47-11e4-bc0b-020cbce70073"
 # kvmarm-3.18-measure-bm disk image URL
 bm_disk_image = "https://www.utah.cloudlab.us/image_metadata.php?uuid=9f549410-ce44-11e4-9fb8-3548323d6d11"
 
