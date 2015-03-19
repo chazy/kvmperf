@@ -1,6 +1,17 @@
 import geni.portal as portal
 import geni.rspec.pg as RSpec
 
+# Creates 4 nodes: 1 client node, 1 bare-metal node, 1 KVM node, 1 Xen node
+
+# Instantiate and connect to the individual nodes and run experiments:
+# - on the bare-metal node, run "cd /srv/vm && sudo ./consume-mem.sh"
+# - on the xen node, run "cd /srv/vm && sudo ./net.sh && sudo ./create_domU.sh"
+# - on the kvm node, run "cd /srv/vm && sudo ./net.sh"
+
+# The Xen and KVM nodes have only the internet IP adapter starting up
+# automatically. Login to the nodes and do ifup eth1 to configure the
+# private ones.
+
 
 # Initial setup, parameter passing
 pc = portal.Context()
