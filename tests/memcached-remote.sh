@@ -16,7 +16,7 @@ function memcached_test()
 	$SCP tools/$MEMCACHED.tar.gz $USER@$remote:~/$MEMCACHED.tar.gz
 	ssh $USER@$remote "sudo cp ~/$MEMCACHED.tar.gz /tmp/"
 	ssh $USER@$remote "sudo cat > /tmp/i.sh && sudo chmod a+x /tmp/i.sh && sudo /tmp/i.sh" < tests/memcached_install.sh
-	ssh $USER@$remote "sudo sed s/127.0.0.1/$remote/g /etc/$MEMCACHED_CONF > /tmp/i.conf"
+	ssh $USER@$remote "sudo sed 's/^-l.*/-l $remote/g' /etc/$MEMCACHED_CONF > /tmp/i.conf"
 	ssh $USER@$remote "sudo cp /tmp/i.conf /etc/$MEMCACHED_CONF"
 	ssh $USER@$remote "rm /tmp/i.conf"
 
