@@ -20,7 +20,7 @@ rspec = RSpec.Request()
 # kvmarm-3.18-measure disk image URL
 kvm_disk_image = "https://www.utah.cloudlab.us/image_metadata.php?uuid=89e729ae-cd87-11e4-9fb8-3548323d6d11"
 # kvmarm-3.18-xen-measure disk image URL
-xen_disk_image = "https://www.utah.cloudlab.us/image_metadata.php?uuid=b15ee958-cd81-11e4-9fb8-3548323d6d11"
+xen_disk_image = "https://www.utah.cloudlab.us/image_metadata.php?uuid=2221ca56-ce29-11e4-bc0b-020cbce70073"
 
 # Create private LAN
 lan = RSpec.LAN()
