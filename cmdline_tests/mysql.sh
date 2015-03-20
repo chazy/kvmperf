@@ -10,7 +10,6 @@ function usage() {
 SERVER=${2-localhost}	# dns/ip for machine to test
 REPTS=${3-4}
 
-
 NR_REQUESTS=1000
 TABLE_SIZE=1000000
 RESULTS=mysql.txt
@@ -36,7 +35,7 @@ elif [[ "$ACTION" == "run" ]]; then
 	for num_threads in 1 2 4 8 20 100 200 400; do
 		echo -e "$num_threads threads:\n---" >> $RESULTS
 		for i in `seq 1 $REPTS`; do
-			sysbench --test=oltp --num-threads=$num_threads --mysql-password=kvm run | tee \
+			sysbench --test=oltp --num-threads=$num_threads --mysql-host=$SERVER --mysql-password=kvm run | tee \
 				>(grep 'total time:' | awk '{ print $3 }' | sed 's/s//' >> $RESULTS)
 		done;
 		echo "" >> $RESULTS
