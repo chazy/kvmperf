@@ -13,8 +13,8 @@ function apache_test()
 		tee -a $LOGFILE
 
 	$SCP tools/gcc-html.tar.gz $USER@$remote:~/
-	ssh $USER@$remote "sudo cp ~/gcc-html.tar.gz /var/www/" | tee -a $LOGFILE
-	ssh $USER@$remote "cd /var/www; sudo tar xzf gcc-html.tar.gz" | tee -a $LOGFILE
+	ssh $USER@$remote "sudo cp ~/gcc-html.tar.gz /var/www/html" | tee -a $LOGFILE
+	ssh $USER@$remote "cd /var/www/html; sudo tar xzf gcc-html.tar.gz" | tee -a $LOGFILE
 	ssh $USER@$remote "sudo service apache2 start" | tee -a $LOGFILE
 	APACHE_STARTED="$remote"
 
