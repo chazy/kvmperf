@@ -7,7 +7,7 @@ import geni.rspec.pg as RSpec
 # - on the bare-metal node, run "cd /srv/vm && sudo ./consume-mem.sh"
 # - on the xen node, run "cd /srv/vm && sudo ./net.sh && sudo ./create_domU.sh"
 # - on the kvm node, run "cd /srv/vm && sudo ./net.sh"
-
+#
 # The Xen and KVM nodes have only the internet IP adapter starting up
 # automatically. Login to the nodes and do ifup eth1 to configure the
 # private ones.
@@ -44,7 +44,7 @@ lan.addInterface(iface)
 # IP will be 10.10.1.2
 node = RSpec.RawPC("xen-node")
 node.hardware_type = "m400"
-node.disk_image =xen_disk_image
+node.disk_image = xen_disk_image
 rspec.addResource(node)
 iface = node.addInterface("eth1")
 lan.addInterface(iface)
