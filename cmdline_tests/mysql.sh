@@ -39,6 +39,7 @@ elif [[ "$ACTION" == "run" ]]; then
 			sysbench --test=oltp --num-threads=$num_threads --mysql-password=kvm run | tee \
 				>(grep 'total time:' | awk '{ print $3 }' | sed 's/s//' >> $RESULTS)
 		done;
+		echo "" >> $RESULTS
 	done;
 elif [[ "$ACTION" == "cleanup" ]]; then
 	# Cleanup
