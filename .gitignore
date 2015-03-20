@@ -1,2 +1,3 @@
 .localconf
 *values*
+cmdline_tests/*.txt
