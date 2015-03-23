@@ -8,16 +8,16 @@ fi
 
 which memslap > /dev/null 2>&1
 if [[ ! $? == 0 ]]; then
-	apt-get install -y g++ libmemcached10
+	apt-get install -y g++ libmemcached10 libmemcached-dev
 
-	MEMCACHED=libmemcached-1.0.15
+	MEMCACHED=libmemcached-1.0.18
 	cp ../tools/$MEMCACHED.tar.gz /tmp/.
 	cd /tmp
 	tar xvzf $MEMCACHED.tar.gz
 
 	pushd $MEMCACHED
 	./configure
-	make
+	make -j 8
 	make install
 	popd
 fi
