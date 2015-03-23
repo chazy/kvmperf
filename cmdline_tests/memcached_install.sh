@@ -6,19 +6,15 @@ if [[ ! $? == 0 ]]; then
 	update-rc.d memcached disable
 fi
 
-which memslap > /dev/null 2>&1
-if [[ ! $? == 0 ]]; then
-	apt-get install -y g++ libmemcached10 libmemcached-dev
-
-	MEMCACHED=libmemcached-1.0.18
-	cp ../tools/$MEMCACHED.tar.gz /tmp/.
+which memtier_benchmark > /dev/null 2>&1
+if [[ $? != 0 ]]; then
+	apt-get install -y build-essential autoconf automake libpcre3-dev libevent-dev pkg-config zlib1g-dev
 	cd /tmp
-	tar xvzf $MEMCACHED.tar.gz
-
-	pushd $MEMCACHED
+	git clone https://github.com/RedisLabs/memtier_benchmark.git
+	cd memtier_benchmark
+	git checkout aabf9659830ad7a4d126d1fff75ac024dad49d3a
+	autoreconf -ivf
 	./configure
 	make -j 8
 	make install
-	popd
 fi
-
