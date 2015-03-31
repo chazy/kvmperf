@@ -1,2 +1,2 @@
 drop database sbtest;
-drop user 'sbtest'@'localhost';
+drop user 'sbtest'@'%';
