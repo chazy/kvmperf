@@ -22,6 +22,11 @@ sock_sendmsg
 sock_recvmsg
 arch_timer_handler_virt
 arch_timer_handler_phys
+tcp_recvmsg
+tcp_sendmsg
+vp_vring_interrupt
+vp_interrupt
+vp_notify
 EOF
 
 echo 1 > $TDIR/events/kvm/kvm_entry/enable
