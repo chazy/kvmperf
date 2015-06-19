@@ -20,9 +20,12 @@ handle_rx_net
 handle_tx_kick
 sock_sendmsg
 sock_recvmsg
+arch_timer_handler_virt
+arch_timer_handler_phys
 EOF
 
 echo 1 > $TDIR/events/kvm/kvm_entry/enable
 echo 1 > $TDIR/events/kvm/kvm_exit/enable
+echo 1 > $TDIR/events/sched/sched_switch/enable
 
 echo function > $TDIR/current_tracer
