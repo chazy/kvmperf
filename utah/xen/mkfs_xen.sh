@@ -23,7 +23,7 @@ pvcreate /dev/$DISK	#will make it lvm2
 vgcreate $VGNAME /dev/$DISK
 vgs
 
-lvcreate -n $NAME -l 100%FREE vg_$NAME
+lvcreate -n $NAME -l 100%FREE $VGNAME
 /sbin/mkfs.ext4 /dev/$VGNAME/$NAME
 
 mkdir -p /vm
