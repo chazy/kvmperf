@@ -18,13 +18,14 @@ if [[ $? == 0 ]]; then
 	esac
 fi
 
-parted -s -a optimal /dev/sdb -- mklabel msdos 
+parted -s -a optimal /dev/$DISK -- mklabel msdos 
 pvcreate /dev/$DISK	#will make it lvm2
 vgcreate $VGNAME /dev/$DISK
 vgs
 
-lvcreate -n $NAME -l 100%FREE $VGNAME
-/sbin/mkfs.ext4 /dev/$VGNAME/$NAME
+lvcreate -n $NAME -L 30G $VGNAME
+parted -s -a optimal /dev/$VGNAME/$NAME -- mklabel msdos mkpart primary ext4 1 -1
 
-mkdir -p /vm
-mount /dev/$VGNAME/$NAME /vm
+kpartx -a /dev/$VGNAME/$NAME
+/sbin/mkfs.ext4 /dev/mapper/vg_domU1-domU1p1
+kpartx -d /dev/$VGNAME/$NAME
