@@ -1,12 +1,20 @@
 #!/bin/bash
 
-JDK=/usr/local/jdk7-server-release-1502
-JAVA=$JDK/jre/bin/java
+source setup.sh
 
-if [[ ! -e $JDK ]]; then
-	echo "java not installed - run jdk_install.sh ?" >&2
-	exit 1
+if [[ $arm64 == 1 ]]; then
+	JDK=/usr/local/jdk7-server-release-1502
+
+	if [[ ! -e $JDK ]]; then
+		echo "java not installed - run jdk_install.sh ?" >&2
+		exit 1
+	fi
+
+	JAVA=$JDK/jre/bin/java
+else
+	JAVA=`which java`
 fi
+
 
 SPECJVM=/usr/local/SPECjvm2008
 if [[ ! -d $SPECJVM ]]; then
