@@ -14,9 +14,9 @@ FIO_TEST_DIR="fio_test"
 
 PBZIP_DIR="pbzip_test"
 
-TEST_PBZIP_REPEAT=3
-TEST_KERNBENCH_REPEAT=1
-TEST_FIO_REPEAT=3
+TEST_PBZIP_REPEAT=${1:-3}
+TEST_KERNBENCH_REPEAT=${2:-1}
+TEST_FIO_REPEAT=${3:-3}
 
 TIMELOG=$(pwd)/time.txt
 TIME="/usr/bin/time --format=%e -o $TIMELOG --append"
