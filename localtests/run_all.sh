@@ -112,6 +112,7 @@ direct=1
 invalidate=1
 iodepth=8
 ioengine=sync
+size=128m
 " > random-write-test.fio
 
 echo "; random read of 128mb of data
@@ -123,6 +124,7 @@ direct=1
 invalidate=1
 iodepth=8
 ioengine=sync
+size-128m
 " > random-read-test.fio
 
 if [[ ! $TEST_PBZIP_REPEAT == 0 ]]; then
