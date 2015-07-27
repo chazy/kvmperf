@@ -139,7 +139,7 @@ pbzip() {
     ssh -oBatchMode=yes -o "StrictHostKeyChecking no" -l root $GUEST_IP "cd ~/kvmperf/localtests/; rm -rf $PBZIP_DIR; mkdir $PBZIP_DIR; cp $KERNEL_XZ $PBZIP_DIR; pbzip2 -p2 -m500 $PBZIP_DIR/$KERNEL_XZ; rm $PBZIP_DIR/$KERNEL_BZ;"
     cat /sys/kernel/debug/kvm/exit_stats
     echo reset > /sys/kernel/debug/kvm/exit_stats
-    ssh -oBatchMode=yes -o "StrictHostKeyChecking no" -l root $GUEST_IP "cd ~/kvmperf/localtests/; rm -rf $PBZIP_DIR; mkdir $PBZIP_DIR; cp $KERNEL_XZ $PBZIP_DIR; pbzip2 -d -p2 -m500 $PBZIP_DIR/$KERNEL_XZ; rm $PBZIP_DIR/$KERNEL_BZ;"
+    ssh -oBatchMode=yes -o "StrictHostKeyChecking no" -l root $GUEST_IP "cd ~/kvmperf/localtests/; rm -rf $PBZIP_DIR; mkdir $PBZIP_DIR; cp $KERNEL_BZ $PBZIP_DIR; pbzip2 -d -p2 -m500 $PBZIP_DIR/$KERNEL_BZ; rm $PBZIP_DIR/$KERNEL_XZ;"
     cat /sys/kernel/debug/kvm/exit_stats
   fi
 
