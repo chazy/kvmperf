@@ -1,8 +1,8 @@
 #!/bin/bash
 
 DISK=sdb
-NAME=domU1
-VGNAME=vg_$NAME
+NAME=guest0
+VGNAME=vg_kvm
 
 vgdisplay $VGNAME 2>&1 > /dev/null
 if [[ $? == 0 ]]; then
