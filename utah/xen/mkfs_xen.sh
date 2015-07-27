@@ -27,5 +27,5 @@ lvcreate -n $NAME -L 30G $VGNAME
 parted -s -a optimal /dev/$VGNAME/$NAME -- mklabel msdos mkpart primary ext4 1 -1
 
 kpartx -a /dev/$VGNAME/$NAME
-/sbin/mkfs.ext4 /dev/mapper/vg_domU1-domU1p1
+/sbin/mkfs.ext4 /dev/mapper/${VGNAME}-${NAME}p1
 kpartx -d /dev/$VGNAME/$NAME
