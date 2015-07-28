@@ -104,7 +104,7 @@ else
 fi
 
 
-echo "; random write of 128mb of data
+echo -n "; random write of 128mb of data
 
 [random-write]
 rw=randwrite
@@ -117,7 +117,7 @@ size=$SIZE" > random-write-test.fio
 
 echo "m" >> random-write-test.fio
 
-echo "; random read of 128mb of data
+echo -n "; random read of 128mb of data
 
 [random-read]
 rw=randread
