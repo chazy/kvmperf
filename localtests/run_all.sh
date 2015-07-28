@@ -114,8 +114,8 @@ direct=1
 invalidate=1
 iodepth=8
 ioengine=sync
-bs=$SIZE" 
-> random-write-test.fio
+bs=$SIZE
+" > random-write-test.fio
 
 
 echo "; random read of 128mb of data
@@ -127,8 +127,8 @@ direct=1
 invalidate=1
 iodepth=8
 ioengine=sync
-bs=$SIZE"
-> random-read-test.fio
+bs=$SIZE
+"> random-read-test.fio
 
 if [[ ! $TEST_PBZIP_REPEAT == 0 ]]; then
 	rm -rf $PBZIP_DIR
