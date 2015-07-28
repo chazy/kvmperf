@@ -17,6 +17,7 @@ PBZIP_DIR="pbzip_test"
 TEST_PBZIP_REPEAT=${1:-3}
 TEST_KERNBENCH_REPEAT=${2:-1}
 TEST_FIO_REPEAT=${3:-3}
+SIZE=${4:-128}
 
 TIMELOG=$(pwd)/time.txt
 TIME="/usr/bin/time --format=%e -o $TIMELOG --append"
@@ -112,7 +113,7 @@ direct=1
 invalidate=1
 iodepth=8
 ioengine=sync
-size=128m
+size=$SIZEm
 " > random-write-test.fio
 
 echo "; random read of 128mb of data
@@ -124,7 +125,7 @@ direct=1
 invalidate=1
 iodepth=8
 ioengine=sync
-size-128m
+size=$SIZEm
 " > random-read-test.fio
 
 if [[ ! $TEST_PBZIP_REPEAT == 0 ]]; then
