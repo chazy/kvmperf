@@ -28,7 +28,7 @@ refresh() {
 	sleep 15
 }
 
-rm -f $TIMELOG
+#rm -f $TIMELOG
 touch $TIMELOG
 
 apt-get install -y time bc pbzip2 gawk wget
