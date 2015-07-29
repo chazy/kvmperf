@@ -157,13 +157,13 @@ if [[ ! $TEST_FIO_REPEAT == 0 ]]; then
 	rm -rf $FIO_TEST_DIR
 	mkdir $FIO_TEST_DIR
 
-	echo "fio random read (in msec)" >> $TIMELOG
+	echo "fio random read (in msec) $SIZE" >> $TIMELOG
 	for i in `seq 1 $TEST_FIO_REPEAT`; do
 		cp $KERNEL_XZ $FIO_TEST_DIR
 		refresh
 		./$FIO_DIR/$FIO random-read-test.fio | tee >(grep 'read : io' | awk 'BEGIN { FS = "=" }; {print $5+0}' >> $TIMELOG)
 	done
-	echo "fio random write (in msec)" >> $TIMELOG
+	echo "fio random write (in msec) $SIZE" >> $TIMELOG
 	for i in `seq 1 $TEST_FIO_REPEAT`; do
 		cp $KERNEL_XZ $FIO_TEST_DIR
 		refresh
