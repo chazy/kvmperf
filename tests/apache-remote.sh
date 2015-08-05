@@ -9,12 +9,13 @@ function apache_test()
 	NR_REQUESTS=100000
 
 	# Make sure apache is installed and disabled
-	ssh root@$remote "cat > /tmp/i.sh && chmod a+x /tmp/i.sh && /tmp/i.sh" < tests/apache_install.sh | \
+	ssh $USER@$remote "sudo cat > /tmp/i.sh && sudo chmod a+x /tmp/i.sh && sudo /tmp/i.sh" < tests/apache_install.sh | \
 		tee -a $LOGFILE
 
-	$SCP tools/gcc-html.tar.gz root@$remote:/var/www/.
-	ssh root@$remote "cd /var/www; tar xzf gcc-html.tar.gz" | tee -a $LOGFILE
-	ssh root@$remote "service apache2 start" | tee -a $LOGFILE
+	$SCP tools/gcc-html.tar.gz $USER@$remote:~/
+	ssh $USER@$remote "sudo cp ~/gcc-html.tar.gz /var/www/html" | tee -a $LOGFILE
+	ssh $USER@$remote "cd /var/www/html; sudo tar xzf gcc-html.tar.gz" | tee -a $LOGFILE
+	ssh $USER@$remote "sudo service apache2 start" | tee -a $LOGFILE
 	APACHE_STARTED="$remote"
 
 	rm -f /tmp/power.values.*
@@ -23,10 +24,10 @@ function apache_test()
 	rm -f /tmp/time.txt
 	touch /tmp/time.txt
 	for i in `seq 1 $REPTS`; do
-		power_start $i
+	#	power_start $i
 		$ab -n $NR_REQUESTS -c 100 http://$remote/gcc/index.html | \
 			tee >(grep 'Requests per second' | awk '{ print $4 }' >> /tmp/time.txt)
-		power_end $i
+	#	power_end $i
 	done;
 
 	# Get time stats
@@ -51,7 +52,7 @@ function apache_test()
 		echo "" >> $OUTFILE
 	fi
 
-	ssh root@$remote "service apache2 stop" | tee -a $LOGFILE
+	ssh $USER@$remote "sudo service apache2 stop" | tee -a $LOGFILE
 	APACHE_STARTED=""
 }
 

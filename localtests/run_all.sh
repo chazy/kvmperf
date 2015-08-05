@@ -14,9 +14,11 @@ FIO_TEST_DIR="fio_test"
 
 PBZIP_DIR="pbzip_test"
 
+DEFAULT_SIZE="4k"
 TEST_PBZIP_REPEAT=${1:-3}
 TEST_KERNBENCH_REPEAT=${2:-1}
 TEST_FIO_REPEAT=${3:-3}
+SIZE=${4:-$DEFAULT_SIZE}
 
 TIMELOG=$(pwd)/time.txt
 TIME="/usr/bin/time --format=%e -o $TIMELOG --append"
@@ -26,7 +28,7 @@ refresh() {
 	sleep 15
 }
 
-rm -f $TIMELOG
+#rm -f $TIMELOG
 touch $TIMELOG
 
 apt-get install -y time bc pbzip2 gawk wget
@@ -112,7 +114,9 @@ direct=1
 invalidate=1
 iodepth=8
 ioengine=sync
+bs=$SIZE
 " > random-write-test.fio
+
 
 echo "; random read of 128mb of data
 
@@ -123,7 +127,8 @@ direct=1
 invalidate=1
 iodepth=8
 ioengine=sync
-" > random-read-test.fio
+bs=$SIZE
+"> random-read-test.fio
 
 if [[ ! $TEST_PBZIP_REPEAT == 0 ]]; then
 	rm -rf $PBZIP_DIR
@@ -152,13 +157,13 @@ if [[ ! $TEST_FIO_REPEAT == 0 ]]; then
 	rm -rf $FIO_TEST_DIR
 	mkdir $FIO_TEST_DIR
 
-	echo "fio random read (in msec)" >> $TIMELOG
+	echo "fio random read (in msec) $SIZE" >> $TIMELOG
 	for i in `seq 1 $TEST_FIO_REPEAT`; do
 		cp $KERNEL_XZ $FIO_TEST_DIR
 		refresh
 		./$FIO_DIR/$FIO random-read-test.fio | tee >(grep 'read : io' | awk 'BEGIN { FS = "=" }; {print $5+0}' >> $TIMELOG)
 	done
-	echo "fio random write (in msec)" >> $TIMELOG
+	echo "fio random write (in msec) $SIZE" >> $TIMELOG
 	for i in `seq 1 $TEST_FIO_REPEAT`; do
 		cp $KERNEL_XZ $FIO_TEST_DIR
 		refresh

@@ -21,24 +21,24 @@ early_exit()
 
 	if [[ -n "$HOST_DIR" ]]; then
 		echo -n "Removing temporary directory on the host..."
-		$SSSH root@$HOST "umount $HOST_DIR/ram"
-		ssh root@$HOST "rm -rf $HOST_DIR"
+		$SSSH $USER@$HOST "sudo umount $HOST_DIR/ram"
+		ssh $USER@$HOST "sudo rm -rf $HOST_DIR"
 		echo "done"
 	fi
 	if [[ -n "$GUEST_DIR" ]]; then
 		echo -n "Removing temporary directory on the guest"
-		$SSSH root@$GUEST1 "umount $GUEST_DIR/ram"
-		ssh root@$GUEST1 "rm -rf $GUEST_DIR"
+		$SSSH $USER@$GUEST1 "sudo umount $GUEST_DIR/ram"
+		ssh $USER@$GUEST1 "sudo rm -rf $GUEST_DIR"
 		echo "done"
 	fi
 	if [[ -n "$APACHE_STARTED" ]]; then
 		echo -n "Stopping service apache2 on $APACHE_STARTED..."
-		$SSH 2>/dev/null 1>/dev/null root@$APACHE_STARTED "service apache2 stop"
+		$SSH 2>/dev/null 1>/dev/null $USER@$APACHE_STARTED "sudo service apache2 stop"
 		echo "done"
 	fi
 	if [[ -n "$MYSQL_STARTED" ]]; then
 		echo -n "Stopping service mysql on $MYSQL_STARTED..."
-		$SSH 2>/dev/null 1>/dev/null root@$MYSQL_STARTED "service mysql stop"
+		$SSH 2>/dev/null 1>/dev/null $USER@$MYSQL_STARTED "sudo service mysql stop"
 		echo "done"
 	fi
 	if [[ $GUEST_ALIVE == 1 ]]; then
@@ -48,7 +48,7 @@ early_exit()
 	fi
 	if [[ ! $POWER_PID == 0 && "$TESTARCH" == "arm" ]]; then
 		echo -n "Shutting down power probe..."
-		$SSH root@$POWERHOST "pkill -SIGINT arm-probe"
+		$SSH $USER@$POWERHOST "sudo pkill -SIGINT arm-probe"
 		sleep 1
 		kill $POWER_PID
 		POWER_PID=0
@@ -62,9 +62,9 @@ function start_guest()
 	GUEST_ALIVE=1
 	sleep 1
 	echo "Starting guest with command: $START_VM_COMMAND" | tee -a $LOGFILE
-	ssh -f root@$HOST 2>&1 >>$LOGFILE "sync; echo 3 > /proc/sys/vm/drop_caches"
+	ssh -f $USER@$HOST 2>&1 >>$LOGFILE "sync; sudo echo 3 > /proc/sys/vm/drop_caches"
 	sleep 5
-	ssh -f root@$HOST 2>&1 >>$LOGFILE "$START_VM_COMMAND"
+	ssh -f $USER@$HOST 2>&1 >>$LOGFILE "$START_VM_COMMAND"
 	if [[ ! $? == 0 ]]; then
 		echo "Error starting guest - check logfile!" >&2
 		return 1
@@ -76,12 +76,12 @@ function shutdown_guest()
 {
 	GUEST_ALIVE=0
 	echo "Shutting down guest" 2>&1 | tee -a $LOGFILE
-	ssh root@$GUEST1 "halt -p"
+	ssh $USER@$GUEST1 "halt -p"
 	sleep 20
-	ssh root@$HOST "$SHUTDOWN_VM_COMMAND" 2>&1 | tee -a $LOGFILE
+	ssh $USER@$HOST "$SHUTDOWN_VM_COMMAND" 2>&1 | tee -a $LOGFILE
 	sleep 1
 	if [[ -n "$VM_CONSOLE" ]]; then
-		$SCP root@$HOST:$VM_CONSOLE /tmp/.
+		$SCP $USER@$HOST:$VM_CONSOLE /tmp/.
 		echo "VM Console:" >> $LOGFILE
 		cat /tmp/$(basename $VM_CONSOLE) >> $LOGFILE
 	fi
@@ -133,21 +133,28 @@ function common_test()
 
 	# Create remote directory, upload common scripts and tools
 	echo "Uploading common scripts and tools to $remote_dir" | tee -a $LOGFILE
-	ssh root@$remote "mkdir $remote_dir"
-	$SCP ".localconf" root@$remote:$remote_dir/.
-	$SCP "tests/common.sh" root@$remote:$remote_dir/.
-	$SCP "tests/power.sh" root@$remote:$remote_dir/.
-	$SCP "tests/$cmdname" root@$remote:$remote_dir/.
+	ssh $USER@$remote "mkdir $remote_dir"
+	$SCP ".localconf" $USER@$remote:$remote_dir/.
+	$SCP "tests/common.sh" $USER@$remote:$remote_dir/.
+	$SCP "tests/power.sh" $USER@$remote:$remote_dir/.
+	$SCP "tests/$cmdname" $USER@$remote:$remote_dir/.
+  if [ "$uut" = "hackbench" ]; then
+    $SCP "tools/hackbench.c" $USER@$remote:$remote_dir/.
+    $SSH -t $USER@$remote "gcc -o hackbench hackbench.c -lpthread;sudo cp hackbench $remote_dir" 2>&1 | tee -a $LOGFILE
+	  if [[ $? == 255 ]]; then
+		  early_exit
+	  fi
+  fi
 	while [[ -n $1 ]]; do
 		file=`basename $1`
-		scp -q "$TOOLS/$file" root@$remote:$remote_dir/.
+		scp -q "$TOOLS/$file" $USER@$remote:$remote_dir/.
 		shift 1
 	done
 	if [[ $DO_POWER == 1 ]]; then
 		echo "Measuring power for $uut on $remote" | tee -a $LOGFILE
 		echo "DO_POWER=1" > /tmp/powerconf
 		echo "POWEROUT=\"$remote_dir\"" >> /tmp/powerconf
-		$SCP /tmp/powerconf root@$remote:$remote_dir/powerconf
+		$SCP /tmp/powerconf $USER@$remote:$remote_dir/powerconf
 	fi
 
 	# Actually run the test command
@@ -156,15 +163,15 @@ function common_test()
 	remote_cmd=""\
 "chmod a+x $remote_dir/$cmdname && "\
 "cd $remote_dir && "\
-"./$cmdname"
-	$SSH -t root@$remote "$remote_cmd" 2>&1 | tee -a $LOGFILE
+"sudo ./$cmdname"
+	$SSH -t $USER@$remote "$remote_cmd" 2>&1 | tee -a $LOGFILE
 	if [[ $? == 255 ]]; then
 		early_exit
 	fi
 
 	# Get time stats
 	echo "Downloading time stats" | tee -a $LOGFILE
-	$SCP root@$remote:$remote_dir/time.txt /tmp/time.txt
+	$SCP $USER@$remote:$remote_dir/time.txt /tmp/time.txt
 	tr '\n' '\t' < /tmp/time.txt | tee -a $LOGFILE
 	echo "" | tee -a $LOGFILE
 
@@ -177,7 +184,7 @@ function common_test()
 	if [[ $DO_POWER == 1 ]]; then
 		rm -f /tmp/power.values.*
 		echo "Downloading power stats" | tee -a $LOGFILE
-		$SCP root@$remote:$remote_dir/power.values.* /tmp/.
+		$SCP $USER@$remote:$remote_dir/power.values.* /tmp/.
 		echo -en " $uut (${remote} - power)\t" >> $OUTFILE
 		for powerfile in `ls -1 /tmp/power.values.*`; do
 			piter=`basename "$powefile" | awk -F . '{print $NF}'`
@@ -190,8 +197,8 @@ function common_test()
 
 	# Clean up
 	echo "Cleaning up" | tee -a $LOGFILE
-	ssh root@$remote "umount $remote_dir/ram 2>/dev/null" | tee -a $LOGFILE
-	ssh root@$remote "rm -rf $remote_dir" | tee -a $LOGFILE
+	ssh $USER@$remote "sudo umount $remote_dir/ram 2>/dev/null" | tee -a $LOGFILE
+	ssh $USER@$remote "sudo rm -rf $remote_dir" | tee -a $LOGFILE
 	set_remote_dir ""
 }
 
@@ -243,8 +250,8 @@ function dd_read_test()
 
 	if [[ $GUEST_ALIVE == 0 ]]; then
 		for i in `seq 1 $REPTS`; do
-			ssh root@$remote "sync"
-			ssh root@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
+			ssh $USER@$remote "sync"
+			ssh $USER@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
 
 			rm "$OUTFILE"
 			common_test "$1" "$2"
@@ -252,8 +259,8 @@ function dd_read_test()
 			cat "$OUTFILE"
 			cat "$OUTFILE" | awk '{ print $3 }' | tr '\n' '\t' >> "$ORIG_OUTFILE"
 
-			ssh root@$remote "sync"
-			ssh root@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
+			ssh $USER@$remote "sync"
+			ssh $USER@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
 		done
 	else
 		# VM must be rebooted between each run here
@@ -261,8 +268,8 @@ function dd_read_test()
 			shutdown_guest
 
 			rm "$OUTFILE"
-			ssh root@$remote "sync"
-			ssh root@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
+			ssh $USER@$remote "sync"
+			ssh $USER@$remote " sudo bash -c 'echo 3 > /proc/sys/vm/drop_caches'"
 
 			start_guest
 			if [[ ! $? == 0 ]]; then
@@ -285,7 +292,7 @@ function dd_read_test()
 		done
 	fi
 
-	ssh root@$remote "rm -f /root/foo"
+	ssh $USER@$remote "rm -f /$USER/foo"
 
 	OUTFILE="$ORIG_OUTFILE"
 	echo "" >> $OUTFILE
@@ -294,23 +301,6 @@ function dd_read_test()
 function dd_rw_test()
 {
 	common_test "$1" "$2"
-}
-
-function memcached_test()
-{
-	uut="$1"	# unit under test
-	remote="$2"	# dns/ip for machine to test
-
-	MEMCACHED=libmemcached-1.0.15
-
-	# Make sure memcached and memslap are installed
-	$SCP tools/$MEMCACHED.tar.gz root@$remote:/tmp/$MEMCACHED.tar.gz
-	ssh root@$remote "cat > /tmp/i.sh && chmod a+x /tmp/i.sh && /tmp/i.sh" < tests/memcached_install.sh | \
-		tee -a $LOGFILE
-
-	common_test "$uut" "$remote"
-
-	ssh root@$remote "service memcached stop" | tee -a $LOGFILE
 }
 
 function fake_test()
@@ -331,12 +321,14 @@ function ws_x86_test()
 
 source tests/apache-remote.sh
 source tests/mysql.sh
+source tests/mysql_remote.sh
+source tests/memcached-remote.sh
 
 ##########################################################################
 # Test Harness
 #
 
-TESTS="hackbench untar curl1k curl1g apache mysql dd_rw kernel_compile memcached ws_arm ws_x86"
+TESTS="hackbench untar curl1k curl1g apache mysql dd_rw kernel_compile memcached ws_arm ws_x86 mysql_remote"
 GUEST_ONLY_TESTS=""
 HOST_ONLY_TESTS="ws_arm ws_x86"
 ARM_ONLY_TESTS="ws_arm"
