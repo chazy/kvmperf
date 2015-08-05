@@ -6,12 +6,13 @@ rm -f $TIMELOG
 touch $TIMELOG
 
 usage() {
-	echo "./run_all.sh [pbzip_rpt] [kernbench_rpt] [fio_rpt]" >&2
+	echo "./run_all.sh [pbzip_rpt] [kernbench_rpt] [fio_rpt] [hackbench_rpt]" >&2
 	echo "" >&2
 	echo "Default valus:" >&2
 	echo "  pbzip:     3 repts" >&2
 	echo "  kernbench: 1 repts" >&2
 	echo "  fio:       3 repts" >&2
+	echo "  hackbench: 4 repts" >&2
 	exit 0
 }
 
@@ -22,10 +23,12 @@ fi
 TEST_PBZIP_REPEAT=${1:-3}
 TEST_KERNBENCH_REPEAT=${2:-1}
 TEST_FIO_REPEAT=${3:-3}
+TEST_HACKBENCH_REPEAT=${4:-4}
 
 ./pbzip.sh $TEST_PBZIP_REPEAT
 ./fio.sh $TEST_FIO_REPEAT
 ./kernbench.sh $TEST_KERNBENCH_REPEAT
+./hackbench.sh $TEST_HACKBENCH_REPEAT
 
 
 cat $TIMELOG
