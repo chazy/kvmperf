@@ -37,7 +37,7 @@ elif [[ "$ACTION" == "run" ]]; then
 		for i in `seq 1 $REPTS`; do
 			sync && echo 3 > /proc/sys/vm/drop_caches
 			sleep 5
-			sysbench --test=oltp --num-threads=$num_threads --mysql-host=$SERVER --mysql-password=kvm run | tee \
+			sysbench --test=oltp --oltp-table-size=$TABLE_SIZE --num-threads=$num_threads --mysql-host=$SERVER --mysql-password=kvm run | tee \
 				>(grep 'total time:' | awk '{ print $3 }' | sed 's/s//' >> $RESULTS)
 		done;
 		echo "" >> $RESULTS
