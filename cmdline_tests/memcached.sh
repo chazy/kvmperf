@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SERVER=${1-127.0.0.1}
-REPTS=4
+REPTS=${2-40}
 RESULTS=memcached.txt
 
 echo "Benchmarking $SERVER" | tee >(cat >> $RESULTS)
