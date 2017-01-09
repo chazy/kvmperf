@@ -2,6 +2,7 @@
 
 TIMELOG=${TIMELOG-$(pwd)/hackbench.txt}
 
+NOKERNEL=1
 source setup.sh
 
 REPTS=${1-4}
