@@ -11,7 +11,7 @@ RESULTS=apache.txt
 ab=/usr/bin/ab
 CMD="$ab -n $NR_REQUESTS -c 100 http://$SRV/gcc/index.html"
 
-service apache2 start
+#service apache2 start
 
 for i in `seq 1 $REPTS`; do
 	$CMD | tee >(grep 'Requests per second' | awk '{ print $4 }' >> $RESULTS)
